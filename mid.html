@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HUM 4241 — Midterm Suggestion Bank: Full Answers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FBF7EC;
+    --paper-2:#F4EEDF;
+    --ink:#1C2624;
+    --teal:#0E3B36;
+    --teal-deep:#082522;
+    --gold:#AD8A33;
+    --gold-light:#D8B86B;
+    --sage:#5F7A71;
+    --rule:#DED2AE;
+    --rule-soft:#E7DFC6;
+    --max:760px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Lora', serif;
+    font-size:17px;
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(14,59,54,0.05) 1px, transparent 0);
+    background-size:22px 22px;
+    pointer-events:none;
+    z-index:0;
+  }
+  .wrap{position:relative; z-index:1; max-width:var(--max); margin:0 auto; padding:0 24px 100px;}
+
+  /* ---------- Header ---------- */
+  header.hero{
+    padding:64px 0 40px;
+    text-align:center;
+    border-bottom:1px solid var(--rule);
+    margin-bottom:36px;
+  }
+  .star{
+    width:46px; height:46px;
+    margin:0 auto 18px;
+    display:block;
+  }
+  .eyebrow{
+    font-family:'Inter', sans-serif;
+    font-size:11px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:600;
+    margin-bottom:14px;
+  }
+  h1.title{
+    font-family:'Amiri', serif;
+    font-weight:700;
+    font-size:2.5rem;
+    line-height:1.18;
+    color:var(--teal-deep);
+    margin:0 0 14px;
+    letter-spacing:.01em;
+  }
+  .subtitle{
+    font-family:'Lora', serif;
+    font-style:italic;
+    color:var(--sage);
+    font-size:1.05rem;
+    max-width:520px;
+    margin:0 auto 6px;
+  }
+  .meta-line{
+    font-family:'Inter', sans-serif;
+    font-size:12.5px;
+    color:#8a8268;
+    margin-top:18px;
+    letter-spacing:.03em;
+  }
+
+  /* ---------- Course note ---------- */
+  .note{
+    background:var(--paper-2);
+    border:1px solid var(--rule-soft);
+    border-radius:3px;
+    padding:18px 22px;
+    font-family:'Inter', sans-serif;
+    font-size:13.5px;
+    line-height:1.65;
+    color:#4a4536;
+    margin-bottom:48px;
+  }
+  .note b{color:var(--teal);}
+
+  /* ---------- TOC ---------- */
+  .toc{
+    margin-bottom:56px;
+  }
+  .toc h2{
+    font-family:'Inter', sans-serif;
+    font-size:11px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:700;
+    border-bottom:1px solid var(--rule);
+    padding-bottom:10px;
+    margin:0 0 16px;
+  }
+  .toc-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:4px 28px;
+  }
+  .toc-grid a{
+    display:flex;
+    gap:10px;
+    align-items:baseline;
+    padding:7px 0;
+    text-decoration:none;
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    font-size:13.5px;
+    border-bottom:1px dotted var(--rule-soft);
+  }
+  .toc-grid a:hover{color:var(--teal);}
+  .toc-num{
+    font-family:'Amiri', serif;
+    font-style:italic;
+    color:var(--gold);
+    font-size:13px;
+    min-width:18px;
+  }
+
+  /* ---------- Divider (signature element) ---------- */
+  .divider{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin:8px 0 38px;
+    opacity:.85;
+  }
+  .divider .line{flex:1; height:1px; background:var(--rule);}
+  .divider svg{width:20px; height:20px; flex-shrink:0;}
+
+  /* ---------- Question blocks ---------- */
+  section.q{
+    margin-bottom:18px;
+    scroll-margin-top:24px;
+  }
+  .q-eyebrow{
+    font-family:'Inter', sans-serif;
+    font-size:11px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:700;
+    margin-bottom:10px;
+  }
+  .q-text{
+    font-family:'Amiri', serif;
+    font-style:italic;
+    font-size:1.07rem;
+    line-height:1.65;
+    color:var(--teal-deep);
+    background:var(--paper-2);
+    border-left:3px solid var(--gold);
+    padding:18px 22px;
+    margin:0 0 26px;
+    border-radius:0 3px 3px 0;
+  }
+  .a-label{
+    font-family:'Inter', sans-serif;
+    font-size:11px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--sage);
+    font-weight:600;
+    margin-bottom:14px;
+  }
+  .answer p{margin:0 0 14px;}
+  .answer h4{
+    font-family:'Inter', sans-serif;
+    font-size:13.5px;
+    letter-spacing:.01em;
+    color:var(--teal);
+    font-weight:700;
+    margin:20px 0 6px;
+  }
+  .answer ul, .answer ol{
+    margin:0 0 16px;
+    padding-left:22px;
+  }
+  .answer li{margin-bottom:7px;}
+  .answer strong{color:var(--teal-deep);}
+
+  blockquote.scripture{
+    font-family:'Amiri', serif;
+    font-style:italic;
+    font-size:1rem;
+    color:var(--teal);
+    border-left:2px solid var(--gold-light);
+    margin:16px 0;
+    padding:4px 0 4px 18px;
+  }
+  blockquote.scripture cite{
+    display:block;
+    font-family:'Inter', sans-serif;
+    font-style:normal;
+    font-size:11.5px;
+    letter-spacing:.04em;
+    color:var(--sage);
+    margin-top:6px;
+  }
+
+  table.cmp{
+    width:100%;
+    border-collapse:collapse;
+    margin:16px 0 20px;
+    font-size:14.5px;
+    font-family:'Lora', serif;
+  }
+  table.cmp th, table.cmp td{
+    border:1px solid var(--rule-soft);
+    padding:9px 11px;
+    text-align:left;
+    vertical-align:top;
+  }
+  table.cmp th{
+    background:var(--paper-2);
+    font-family:'Inter', sans-serif;
+    font-size:11px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--teal);
+    font-weight:700;
+  }
+  table.cmp td.label{
+    font-weight:600;
+    color:var(--teal-deep);
+    background:rgba(173,138,51,0.06);
+  }
+
+  .src-tag{
+    display:inline-block;
+    font-family:'Inter', sans-serif;
+    font-size:11px;
+    color:#8a8268;
+    margin-top:10px;
+    border-top:1px dashed var(--rule-soft);
+    padding-top:10px;
+    width:100%;
+  }
+
+  footer{
+    margin-top:60px;
+    padding-top:28px;
+    border-top:1px solid var(--rule);
+    text-align:center;
+    font-family:'Inter', sans-serif;
+    font-size:12px;
+    color:#8a8268;
+  }
+
+  @media (max-width:560px){
+    h1.title{font-size:1.9rem;}
+    .toc-grid{grid-template-columns:1fr;}
+    .q-text{padding:14px 16px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <svg class="star" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="#AD8A33" stroke-width="1.4">
+        <path d="M50 5 L61 39 L97 39 L68 60 L79 95 L50 74 L21 95 L32 60 L3 39 L39 39 Z"/>
+      </g>
+    </svg>
+    <div class="eyebrow">HUM 4241 · Islamic History, Science &amp; Culture</div>
+    <h1 class="title">Midterm Suggestion Bank<br>— Complete Answers</h1>
+    <p class="subtitle">All sixteen questions, answered from the lecture slides (Lectures 5–10) and supported with Qur'anic and Hadith evidence.</p>
+    <div class="meta-line">Islamic University of Technology (IUT) · Dept. of CSE · Muhammad Mohsin, Adjunct Faculty</div>
+  </header>
+
+  <div class="note">
+    <b>How to use this document.</b> Each answer follows the structure asked for in the question and is built directly from the lecture decks "Seerah of Prophet Muhammad ﷺ," "Islamic Culture — Branches of Knowledge &amp; World Religions," "An Elementary Study of Islamic Culture," and "Comparison of Major World Religions." Qur'anic verses and Hadith are quoted briefly for evidence, matching the citations given on the slides themselves.
+  </div>
+
+  <nav class="toc">
+    <h2>Contents</h2>
+    <div class="toc-grid">
+      <a href="#q1"><span class="toc-num">01</span> Conquest of Makkah</a>
+      <a href="#q2"><span class="toc-num">02</span> Ulum al-Qur'an — 5 sub-disciplines</a>
+      <a href="#q3"><span class="toc-num">03</span> Reformer, Statesman, Economist</a>
+      <a href="#q4"><span class="toc-num">04</span> Buddhism vs. the Islamic path</a>
+      <a href="#q5"><span class="toc-num">05</span> Treaty of Hudaybiyyah</a>
+      <a href="#q6"><span class="toc-num">06</span> Tasawwuf</a>
+      <a href="#q7"><span class="toc-num">07</span> Life After Death — comparative</a>
+      <a href="#q8"><span class="toc-num">08</span> Fiqh — sources &amp; four Schools</a>
+      <a href="#q9"><span class="toc-num">09</span> Muakhaat Brotherhood</a>
+      <a href="#q10"><span class="toc-num">10</span> Islamic Art &amp; Architecture</a>
+      <a href="#q11"><span class="toc-num">11</span> Aqeedah — Six Pillars</a>
+      <a href="#q12"><span class="toc-num">12</span> Judaism</a>
+      <a href="#q13"><span class="toc-num">13</span> The Muslim Army</a>
+      <a href="#q14"><span class="toc-num">14</span> Arabic Language</a>
+      <a href="#q15"><span class="toc-num">15</span> Halal &amp; Haram Food</a>
+      <a href="#q16"><span class="toc-num">16</span> The Five Pillars of Practice</a>
+    </div>
+  </nav>
+
+  <!-- ============ Q1 ============ -->
+  <section class="q" id="q1">
+    <div class="q-eyebrow">Question 01</div>
+    <p class="q-text">The Conquest of Makkah (8 AH) took place when 10,000 Muslims marched on the city without a single drop of blood being shed. Identify the Casus Belli, describe Abu Sufyan's surrender, explain the significance of Bilal (RA) giving the Adhan atop the Kaabah after 360 idols were removed, and state the declaration of amnesty the Prophet ﷺ gave to his former enemies with reference to Qur'an 17:81.</p>
+    <div class="a-label">Answer</div>
+    <div class="answer">
+      <h4>Casus Belli</h4>
+      <p>The Treaty of Hudaybiyyah had guaranteed a ten-year truce, but Quraysh broke it by helping their ally, Banu Bakr, attack Banu Khuza'ah, a tribe allied to the Muslims. This violation gave the Prophet ﷺ legitimate and unambiguous grounds for war, and he marched on Makkah at the head of 10,000 men in January 630 CE — the largest force Madinah had ever mobilised.</p>
+
+      <h4>Abu Sufyan's Surrender</h4>
+      <p>Abu Sufyan ibn Harb, the Quraysh chief and the Prophet's ﷺ lifelong adversary, came to negotiate as the army approached. At the city gates the Prophet ﷺ forgave him completely; Abu Sufyan accepted Islam on the spot, and his house was declared a place of safety for anyone who entered it.</p>
+
+      <h4>Bilal (RA) and the Adhan</h4>
+      <p>Once the city was secured, 360 idols surrounding the Ka'bah were removed, restoring the sanctuary to pure monotheistic worship for the first time since the era of Ibrahim (AS). The Prophet ﷺ then had Bilal ibn Rabah (RA) — a formerly enslaved African Muslim — climb atop the Ka'bah to give the call to prayer. The symbolism was deliberate and total: the holiest task in Islam's holiest sanctuary was entrusted to a freed slave, publicly enacting the Qur'anic principle that nobility before Allah rests on piety, not lineage, race, or social class.</p>
+
+      <h4>Declaration of Amnesty</h4>
+      <p>Facing the very city that had persecuted, boycotted, and warred against the Muslims for nearly two decades, the Prophet ﷺ chose mercy over vengeance, declaring: <em>"Idhhabu fa antum al-tulaqa"</em> — "Go, for you are all free." This act of general amnesty is read in light of:</p>
+      <blockquote class="scripture">
+        "And say, 'Truth has come, and falsehood has departed. Indeed is falsehood, [by nature], ever bound to depart.'"
+        <cite>Qur'an 17:81</cite>
+      </blockquote>
+      <p>Makkah fell with virtually no combat — a deliberate demonstration that Islam's triumph was rooted in mercy rather than retribution.</p>
+      <div class="src-tag">Sources: Ibn Hisham, As-Sirah an-Nabawiyyah, Vol. 2; Sahih al-Bukhari, Kitab al-Maghazi #4280; Qur'an 17:81.</div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="line"></span>
+    <svg viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" fill="none" stroke="#AD8A33" stroke-width="1.2"/></svg>
+    <span class="line"></span>
+  </div>
+
+  <!-- ============ Q2 ============ -->
+  <section class="q" id="q2">
+    <div class="q-eyebrow">Question 02</div>
+    <p class="q-text">Ulum al-Quran (Sciences of the Qur'an) is described as the master discipline from which all other Islamic sciences derive their authority. Name and explain FIVE sub-disciplines of Ulum al-Quran — Wahy, Tafsir, Qiraat, Nasikh wal-Mansukh, and Ijaz al-Quran — and for each one state one classical scholar or foundational text associated with it.</p>
+    <div class="a-label">Answer</div>
+    <div class="answer">
+      <p>Ulum al-Quran is the master discipline because no other Islamic science — Fiqh, Aqeedah, Tasawwuf, or Tafsir — can be properly engaged without first establishing how the Qur'an was revealed, transmitted, recited, and preserved.</p>
+      <ul>
+        <li><strong>Wahy (Revelation):</strong> the study of how, when, and to whom Qur'anic verses were revealed, including <em>Asbab al-Nuzul</em> (occasions of revelation), which are essential for correctly applying a ruling to its intended context. Grounded in Qur'an 17:106, which describes the Qur'an as sent down "in stages" so it could be recited to people gradually. <em>Foundational text: Al-Wahidi's Asbab al-Nuzul.</em></li>
+        <li><strong>Tafsir (Exegesis):</strong> the systematic explanation of Qur'anic meaning using Hadith, Arabic linguistics, juristic principles, and scholarly consensus. <em>Scholar: Ibn Kathir, author of Tafsir al-Qur'an al-Azim.</em></li>
+        <li><strong>Qiraat (Recitations):</strong> the seven (or ten) canonically authenticated modes of Qur'anic recitation, each traced through an unbroken, continuous (mutawatir) chain back to the Prophet ﷺ. <em>Scholar: Al-Shatibi, author of Hirz al-Amani.</em></li>
+        <li><strong>Nasikh wal-Mansukh (Abrogation):</strong> identifies which Qur'anic rulings supersede earlier ones revealed on the same subject, essential for deriving correct legal rulings and avoiding misapplication of an earlier verse that was later refined. <em>Scholar: Ibn Hazm, author of Al-Nasikh wal-Mansukh.</em></li>
+        <li><strong>I'jaz al-Quran (Inimitability):</strong> the study of the Qur'an's miraculous literary, scientific, and prophetic dimensions — proof that no human author could replicate it, per the open challenge of Qur'an 2:23. <em>Scholar: Al-Baqillani, author of I'jaz al-Quran.</em></li>
+      </ul>
+      <div class="src-tag">Sources: Quran 17:106; Quran 2:23; Al-Suyuti, Al-Itqan fi 'Ulum al-Quran; Al-Zarqani, Manahil al-'Irfan.</div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="line"></span>
+    <svg viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" fill="none" stroke="#AD8A33" stroke-width="1.2"/></svg>
+    <span class="line"></span>
+  </div>
+
+  <!-- ============ Q3 ============ -->
+  <section class="q" id="q3">
+    <div class="q-eyebrow">Question 03</div>
+    <p class="q-text">Non-Muslim historian Michael H. Hart ranked Prophet Muhammad ﷺ first in "The 100" (1978), calling him supremely successful on both religious and secular levels. Using the three-role framework from the lecture — Reformer, Statesman, and Economist — identify TWO specific actions under each role that justify this ranking, and support your argument with the observation of at least ONE additional non-Muslim scholar quoted in the lecture.</p>
+    <div class="a-label">Answer</div>
+    <div class="answer">
+      <h4>As Reformer</h4>
+      <ul>
+        <li>Abolished female infanticide, blood feuds, and tribal discrimination that had defined pre-Islamic Arabian society.</li>
+        <li>Eliminated gambling, alcohol, and idolatry through gradual, wisdom-based legislation, replacing polytheism with monotheism in what the lecture describes as the most rapid religious transformation in history.</li>
+      </ul>
+      <h4>As Statesman</h4>
+      <ul>
+        <li>United the rival Aws and Khazraj tribes of Madinah through the Constitution of Madinah, recognised as the world's first pluralistic written constitution.</li>
+        <li>Conducted strategic diplomacy — sending letters to the Byzantine, Persian, and Abyssinian rulers — and chose to forgive his enemies at the Conquest of Makkah, treating mercy as the highest form of political wisdom.</li>
+      </ul>
+      <h4>As Economist</h4>
+      <ul>
+        <li>Banned riba (usury), removing the foundation of exploitative lending from Islamic economic life.</li>
+        <li>Instituted Zakah (a 2.5% wealth tax) along with Sadaqah and Zakat al-Fitr as a comprehensive social safety net — establishing principles of economic justice some 1,400 years before modern welfare states.</li>
+      </ul>
+      <h4>Supporting Observation</h4>
+      <p>Beyond Michael H. Hart's ranking of the Prophet ﷺ as the single most influential figure in history for combining religious and secular success, the lecture cites Mahatma Gandhi, who wrote in <em>Young India</em> (1924) that it was not the sword that won Islam its place in the world, but rather the believers' complete devotion to the Prophet's guidance and example — an observation that speaks directly to the Statesman's reliance on conviction and loyalty rather than compulsion.</p>
+      <div class="src-tag">Sources: Hart, M. H., The 100 (1978); Gandhi, M., Young India (1924); Ramadan, T., In the Footsteps of the Prophet, OUP (2007).</div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="line"></span>
+    <svg viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" fill="none" stroke="#AD8A33" stroke-width="1.2"/></svg>
+    <span class="line"></span>
+  </div>
+
+  <!-- ============ Q4 ============ -->
+  <section class="q" id="q4">
+    <div class="q-eyebrow">Question 04</div>
+    <p class="q-text">Buddhism is described as a non-theistic religion — one of the most distinctive features that separates it from all four other major world religions studied in this course. Explain precisely what non-theistic means, describe who the Buddha was and what he claimed about himself, and compare the Buddhist path to Nirvana through the Four Noble Truths and Eightfold Path with the Islamic path to Jannah through faith, righteous deeds, and Allah's mercy, using Qur'an 2:286 and Sahih al-Bukhari #6463.</p>
+    <div class="a-label">Answer</div>
+    <div class="answer">
+      <h4>What "non-theistic" means</h4>
+      <p>Non-theistic means Buddhism has no concept of a creator God who brought the universe into existence, judges souls, or grants salvation. Liberation is achieved entirely through one's own disciplined practice rather than through worship of, or grace from, a deity.</p>
+
+      <h4>Who the Buddha was</h4>
+      <p>Siddhartha Gautama (c. 563 BCE) was a human being who, after years of ascetic searching, attained enlightenment beneath the Bodhi tree. He claimed only to have <em>awakened</em> to the true nature of suffering and its end — hence the title "the Buddha," the Awakened One — never claiming divinity. Some later Mahayana schools venerate him devotionally, but the original teaching presents him strictly as a human teacher, not a god or messenger from one.</p>
+
+      <h4>The Buddhist Path</h4>
+      <p>The Four Noble Truths hold that (1) life involves suffering (dukkha), (2) suffering has a cause — craving (tanha), (3) suffering can be ended, and (4) the Eightfold Path (right view, intention, speech, action, livelihood, effort, mindfulness, and concentration) is the way to end it. Walking this path extinguishes craving and ends the cycle of rebirth, reaching Nirvana — achieved purely through self-effort, with no external judge and, in classical Buddhist doctrine, no permanent soul (Anatta) to be "saved."</p>
+
+      <h4>The Islamic Path to Jannah</h4>
+      <p>Islam's path combines three elements, none of which alone is sufficient: sincere faith (Iman), righteous deeds (Amal Salih), and Allah's mercy. The Prophet ﷺ made clear that good deeds are necessary but never sufficient on their own:</p>
+      <blockquote class="scripture">
+        "None of you will enter Paradise by his deeds alone." They asked, "Not even you, O Messenger of Allah?" He said, "Not even me, unless Allah covers me with His mercy."
+        <cite>Sahih al-Bukhari #6463</cite>
+      </blockquote>
+      <blockquote class="scripture">
+        "Allah does not burden a soul beyond that it can bear. It will have [the consequence of] what [good] it has gained, and it will bear [the consequence of] what [evil] it has earned."
+        <cite>Qur'an 2:286</cite>
+      </blockquote>
+
+      <h4>The Key Contrast</h4>
+      <p>Where the Buddhist path is purely self-powered, with no divine grace and ultimately no permanent self that arrives anywhere, the Islamic path joins human moral striving to belief in a personal Creator who judges with both perfect justice and boundless mercy, and whose door of repentance (Tawbah) remains open until death — leading a soul that retains its identity into an eternal, personal Jannah.</p>
+      <div class="src-tag">Sources: Qur'an 2:286; Sahih al-Bukhari #6463; lecture slide "Salvation, Moksha &amp; Nirvana — The Ultimate Goal."</div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="line"></span>
+    <svg viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" fill="none" stroke="#AD8A33" stroke-width="1.2"/></svg>
+    <span class="line"></span>
+  </div>
+
+  <!-- ============ Q5 ============ -->
+  <section class="q" id="q5">
+    <div class="q-eyebrow">Question 05</div>
+    <p class="q-text">The Treaty of Hudaybiyyah (6 AH) is declared by Allah "a clear victory" (Qur'an 48:1) despite its apparently humiliating terms. Describe the FOUR stages of the event, identify THREE unfavourable terms, and explain with specific historical evidence what strategic gains Islam achieved in the two years of peace that followed.</p>
+    <div class="a-label">Answer</div>
+    <div class="answer">
+      <h4>Four Stages</h4>
+      <ol>
+        <li><strong>The Mission:</strong> 1,400 Muslims set out from Madinah intending to perform Umrah; Quraysh mobilised forces to block their entry into Makkah at the plain of Hudaybiyyah.</li>
+        <li><strong>Bay'at ar-Ridwan:</strong> a rumour that Uthman (RA), sent to negotiate, had been killed sparked the Pledge of the Tree — the Companions vowed to the Prophet ﷺ that they would fight to the end if necessary.</li>
+        <li><strong>Terms Agreed:</strong> a ten-year truce was negotiated; the Muslims would return to Madinah that year without completing Umrah; and Quraysh, by negotiating at all, implicitly recognised the Islamic state as a legitimate political entity.</li>
+        <li><strong>Divine Verdict:</strong> Qur'an 48:1 declared the treaty "a clear victory," reframing what looked like a setback as a triumph by divine revelation.</li>
+      </ol>
+
+      <h4>Three Unfavourable Terms</h4>
+      <ul>
+        <li>The Muslims had to return that year without completing the Umrah they had set out for.</li>
+        <li>They could return the following year, but for only three days.</li>
+        <li>The treaty's extradition clause ran one way: any Muslim apostate who fled to Quraysh would not be returned to Madinah, while any Makkan who came to Madinah claiming Islam would be sent back to Quraysh.</li>
+      </ul>
+
+      <h4>Strategic Gains in the Following Two Years</h4>
+      <p>The truce removed the constant threat of war and let people evaluate Islam on its own terms rather than under the pressure of battle. As a direct result, Islam spread more in the two years of peace that followed than in the previous eighteen years of conflict, and the Muslim population roughly doubled before the Conquest of Makkah. The normalised contact between Makkans and Muslims also exposed Quraysh's own internal divisions. When Quraysh ultimately broke the treaty by helping Banu Bakr attack the Muslims' ally Banu Khuza'ah, the violation gave the Prophet ﷺ clear and unimpeachable grounds to march on Makkah — which fell almost without bloodshed, the very outcome the "clear victory" of Hudaybiyyah had quietly made possible.</p>
+      <div class="src-tag">Sources: Qur'an 48:1 (Al-Fath); Al-Mubarakpuri, Ar-Raheeq al-Makhtum; Ibn Hisham, As-Sirah an-Nabawiyyah, Vol. 2.</div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="line"></span>
+    <svg viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" fill="none" stroke="#AD8A33" stroke-width="1.2"/></svg>
+    <span class="line"></span>
+  </div>
+
+  <!-- ============ Q6 ============ -->
+  <section class="q" id="q6">
+    <div class="q-eyebrow">Question 06</div>
+    <p class="q-text">Tasawwuf (Islamic Spirituality) focuses on the purification of the soul and is described in the lecture as the science that ensures sincerity in all acts of worship. Explain what Tasawwuf is, identify its Qur'anic basis and the definition of Ihsan from the Hadith of Jibril in Sahih Muslim, name its most prominent classical scholar and his foundational work, and explain why a scholar who practises Fiqh without Tasawwuf produces outwardly correct acts that may be spiritually empty.</p>
+    <div class="a-label">Answer</div>
+    <div class="answer">
+      <h4>What Tasawwuf Is</h4>
+      <p>Tasawwuf (also called Sufism, or Ihsan) is the science of purifying the soul (tazkiyat al-nafs) and cultivating sincerity (ikhlas) in worship. It addresses the inner dimension of religious life — combating arrogance, envy, and ostentation, the diseases of the heart that can invalidate the spiritual value of an otherwise correct outward act.</p>
+
+      <h4>Qur'anic Basis</h4>
+      <blockquote class="scripture">
+        "He has succeeded who purifies it [the soul], and he has failed who instils it [with corruption]."
+        <cite>Qur'an 91:9–10</cite>
+      </blockquote>
+      <p>This is reinforced by Qur'an 2:238's command to guard one's prayers and stand before Allah with full devotion, not mere outward motion.</p>
+
+      <h4>Ihsan — Hadith of Jibril</h4>
+      <blockquote class="scripture">
+        "Ihsan is to worship Allah as though you see Him, and if you do not see Him, then [know that] He sees you."
+        <cite>Sahih Muslim, Book 1, Hadith of Jibril</cite>
+      </blockquote>
+
+      <h4>Most Prominent Classical Scholar</h4>
+      <p><strong>Imam Al-Ghazali</strong>, whose monumental work <em>Ihya' Ulum al-Din</em> (Revival of the Religious Sciences) deliberately integrates Fiqh (law) with spirituality, is the most prominent classical authority in this field.</p>
+
+      <h4>Why Fiqh Without Tasawwuf Can Be Empty</h4>
+      <p>Fiqh governs whether the outward form of an act is correct — did a person pray, fast, or pay Zakah according to the rules. But it does not, on its own, guarantee the inner state of the worshipper. A person can perform every ritual with technical precision while harbouring riya' (showing off), arrogance, or envy. Tasawwuf supplies the sincerity (ikhlas) without which legally "correct" worship can become hollow legalism — outwardly flawless, inwardly empty.</p>
+      <div class="src-tag">Sources: Qur'an 91:9–10; Sahih Muslim, Hadith of Jibril; Al-Ghazali, Ihya' Ulum al-Din.</div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="line"></span>
+    <svg viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" fill="none" stroke="#AD8A33" stroke-width="1.2"/></svg>
+    <span class="line"></span>
+  </div>
+
+  <!-- ============ Q7 ============ -->
+  <section class="q" id="q7">
+    <div class="q-eyebrow">Question 07</div>
+    <p class="q-text">The Islamic concept of Life After Death is a precisely defined sequence — not a vague spiritual hope. Describe in order each stage: Barzakh, Yawm al-Qiyamah, the Mizan, the Sirat, and the final destination of Jannah or Jahannam, using Qur'an 3:185 and Qur'an 99:7–8. Then compare this with Moksha and Reincarnation in Hinduism and Nirvana and Rebirth in Buddhism, addressing for each tradition what happens at death, whether individual judgment exists, and what the ultimate destination of the soul is.</p>
+    <div class="a-label">Answer</div>
+    <div class="answer">
+      <h4>The Islamic Sequence</h4>
+      <ol>
+        <li><strong>Barzakh:</strong> the intermediate state between death and resurrection.</li>
+        <li><strong>Yawm al-Qiyamah:</strong> the Day of Resurrection, when every soul is raised and brought to account.
+          <blockquote class="scripture">"Every soul shall taste death. And you will only receive your full reward on the Day of Resurrection." <cite>Qur'an 3:185</cite></blockquote>
+        </li>
+        <li><strong>Al-Mizan:</strong> the Scale on which every deed, however small, is weighed.
+          <blockquote class="scripture">"Whoever does an atom's weight of good will see it. And whoever does an atom's weight of evil will see it." <cite>Qur'an 99:7–8</cite></blockquote>
+        </li>
+        <li><strong>Al-Sirat:</strong> the bridge over Hell that every soul must cross.</li>
+        <li><strong>Final Destination:</strong> Jannah (Paradise) for the righteous, or Jahannam (Hell) for the unrighteous — with believers who sinned able to be purified and eventually admitted to Paradise.</li>
+      </ol>
+
+      <h4>Comparative View</h4>
+      <table class="cmp">
+        <tr><th>Tradition</th><th>What happens at death</th><th>Individual judgment?</th><th>Ultimate destination</th></tr>
+        <tr><td class="label">Islam</td><td>Soul enters Barzakh, awaiting bodily resurrection</td><td>Yes — a personal, just, and merciful Creator weighs every deed</td><td>Eternal Jannah or Jahannam; the soul retains its identity</td></tr>
+        <tr><td class="label">Hinduism</td><td>Atman (soul) transmigrates into a new body (reincarnation)</td><td>No external judge — karma operates as an automatic moral law</td><td>Moksha — Atman is released from Samsara and merges into Brahman</td></tr>
+        <tr><td class="label">Buddhism</td><td>No permanent soul (Anatta); karma-energy flows into a new existence (rebirth)</td><td>No external judge — karma operates automatically, with no personal self being judged</td><td>Nirvana — cessation of craving and rebirth, a state rather than a place</td></tr>
+      </table>
+      <p>The decisive contrast is this: Islam alone posits a personal Creator who individually and consciously judges each soul on a fixed Day, after which the soul retains its identity forever in Jannah or Jahannam. Hinduism and Buddhism both rely on the impersonal mechanism of karma operating across repeated lifetimes, with the "self" either dissolving into Brahman (Hinduism) or ceasing to be a meaningful category altogether (Buddhism's Anatta).</p>
+      <div class="src-tag">Sources: Qur'an 3:185; Qur'an 99:7–8; Bhagavad Gita 2:22; Dhammapada 1.</div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="line"></span>
+    <svg viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" fill="none" stroke="#AD8A33" stroke-width="1.2"/></svg>
+    <span class="line"></span>
+  </div>
+
+  <!-- ============ Q8 ============ -->
+  <section class="q" id="q8">
+    <div class="q-eyebrow">Question 08</div>
+    <p class="q-text">Fiqh (Islamic Jurisprudence) governs a Muslim's every lawful act through four primary sources known as Usul al-Fiqh. Explain each of the FOUR sources — Quran, Sunnah, Ijma, and Qiyas. Then compare the FOUR Sunni schools — Hanafi, Maliki, Shafii, and Hanbali — by identifying each founder with his dates, the regions where each school is predominant, and ONE distinguishing methodological principle of each school.</p>
+    <div class="a-label">Answer</div>
+    <div class="answer">
+      <h4>The Four Sources (Usul al-Fiqh)</h4>
+      <ul>
+        <li><strong>Qur'an:</strong> the primary source — direct divine legislation, the foundation against which every ruling must ultimately be checked.</li>
+        <li><strong>Sunnah:</strong> the Prophet's ﷺ sayings, actions, and tacit approvals, serving as the second source, explaining and elaborating Qur'anic rulings in practice.</li>
+        <li><strong>Ijma:</strong> the scholarly consensus of qualified jurists on a matter not explicitly settled by the Qur'an or Sunnah.</li>
+        <li><strong>Qiyas:</strong> analogical reasoning — extending a known ruling to a new, textually unaddressed case that shares the same underlying legal cause (illah).</li>
+      </ul>
+
+      <h4>The Four Sunni Schools</h4>
+      <table class="cmp">
+        <tr><th>School</th><th>Founder &amp; Dates</th><th>Predominant Regions</th><th>Distinguishing Principle</th></tr>
+        <tr><td class="label">Hanafi</td><td>Imam Abu Hanifa (699–767 CE)</td><td>Iraq, Turkey, South Asia, Central Asia, Egypt</td><td>Emphasises ra'y (reasoned opinion) and Qiyas when texts are not decisive; flexible in commercial/civil law</td></tr>
+        <tr><td class="label">Maliki</td><td>Imam Malik ibn Anas (711–795 CE)</td><td>North &amp; West Africa, Spain (Andalusia)</td><td>Prioritises the living practice ('amal) of the people of Madinah; strong emphasis on Maslaha (public welfare)</td></tr>
+        <tr><td class="label">Shafi'i</td><td>Imam al-Shafi'i (767–820 CE)</td><td>Southeast Asia, Egypt, East Africa, Kurdistan</td><td>First to systematically codify Usul al-Fiqh (in Al-Risalah); strictly prioritises Qur'an and Sunnah over local custom</td></tr>
+        <tr><td class="label">Hanbali</td><td>Imam Ahmad ibn Hanbal (780–855 CE)</td><td>Saudi Arabia, Gulf States, Qatar</td><td>Most conservative; restricts Qiyas and juristic opinion, relying strictly on Qur'an and authenticated Sunnah</td></tr>
+      </table>
+      <div class="src-tag">Sources: Al-Shafi'i, Al-Risalah; Ibn Qudamah, Al-Mughni; Hallaq, W. B., A History of Islamic Legal Theories, CUP (1997).</div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="line"></span>
+    <svg viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" fill="none" stroke="#AD8A33" stroke-width="1.2"/></svg>
+    <span class="line"></span>
+  </div>
+
+  <!-- ============ Q9 ============ -->
+  <section class="q" id="q9">
+    <div class="q-eyebrow">Question 09</div>
+    <p class="q-text">The Muakhaat (Brotherhood) between the Ansar and the Muhajirun transformed the social fabric of Madinah within months of the Hijrah. Explain what Muakhaat was, describe the FIVE types of solidarity it created, and explain why historians describe it as a prerequisite without which neither the Constitution of Madinah nor the economic system of the Islamic state could have functioned.</p>
+    <div class="a-label">Answer</div>
+    <div class="answer">
+      <h4>What Muakhaat Was</h4>
+      <p>Shortly after the Hijrah, the Prophet ﷺ formally paired each Muhajir (Makkan emigrant, who had arrived with nothing) with an Ansari (Madinan host) as brothers — sharing wealth, home, and livelihood. The bond was built on shared faith rather than blood, tribe, or ethnicity, making it a genuinely revolutionary social institution for tribal Arabia.</p>
+
+      <h4>Five Types of Solidarity</h4>
+      <ol>
+        <li><strong>Paired Fellowship:</strong> each Ansari was paired with a Muhajir, generously sharing wealth, home, and livelihood.</li>
+        <li><strong>Faith Over Blood:</strong> the bond rested on shared values and faith, not tribe or kinship — a revolutionary social bond for the time.</li>
+        <li><strong>Willing Generosity:</strong> Ansar voluntarily shared property; some even offered portions of their agricultural land to their new brothers.</li>
+        <li><strong>Solidarity in All States:</strong> brothers were connected in both sorrow and happiness, creating deep social cohesion across previously separate communities.</li>
+        <li><strong>Pluralistic Extension:</strong> the spirit of Muakhaat extended into interfaith coexistence through the Constitution of Madinah, uniting Muslims, Jews, and others as one city-state.</li>
+      </ol>
+
+      <h4>Why It Was a Prerequisite</h4>
+      <p>The Constitution of Madinah required formerly rival groups — the Aws, the Khazraj, the Muhajirun, and the Jewish tribes — to function together as one political community with mutual defence obligations. This was only conceivable because Muakhaat had already dissolved tribal suspicion and modelled genuine cooperation between strangers united solely by shared conviction. Likewise, the destitute Muhajirun arrived with no land, capital, or income; the nascent economic system of the Islamic state depended entirely on the Ansar's voluntary sharing of property and livelihood established through Muakhaat. Without that foundation of trust and material solidarity, neither the constitutional union of Madinah nor the survival of its economy could have taken root.</p>
+      <div class="src-tag">Sources: Ibn Ishaq, Sirat Rasul Allah (trans. Guillaume); Watt, W. M., Muhammad at Medina, OUP (1956).</div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="line"></span>
+    <svg viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" fill="none" stroke="#AD8A33" stroke-width="1.2"/></svg>
+    <span class="line"></span>
+  </div>
+
+  <!-- ============ Q10 ============ -->
+  <section class="q" id="q10">
+    <div class="q-eyebrow">Question 10</div>
+    <p class="q-text">Islamic art and architecture are described as "the Aesthetic of Tawhid" — every element expressing the Oneness of Allah rather than human greatness. Describe FOUR distinctive features — geometric patterns, Arabic calligraphy, arabesques, and the structural elements of the mosque — explaining the theological meaning behind each. Name THREE iconic monuments from three different continents and state what each demonstrates about Islamic civilisation. Support your answer with Sahih Muslim, Hadith 91.</p>
+    <div class="a-label">Answer</div>
+    <div class="answer">
+      <blockquote class="scripture">"Verily, Allah is beautiful and He loves beauty." <cite>Sahih Muslim, Hadith 91</cite></blockquote>
+
+      <h4>Four Distinctive Features</h4>
+      <ul>
+        <li><strong>Geometric Patterns — "Mathematics as Worship":</strong> complex tessellations and star patterns express Allah's infinite, unrepresentable nature without resorting to figurative imagery — a deliberate avoidance of anything resembling idol-craft, paired with mathematical sophistication that predates many later Western discoveries.</li>
+        <li><strong>Arabic Calligraphy — "The Sacred Script":</strong> calligraphy is Islam's highest art form, since it renders the Word of Allah itself beautifully. Qur'anic verses in scripts such as Naskh, Thuluth, Diwani, and Kufi adorn mosques, manuscripts, and pottery, making the text of revelation the central visual motif of the civilisation.</li>
+        <li><strong>Arabesques:</strong> intertwining vine and floral patterns that symbolise the infinite, ever-renewing growth of creation under a single Creator — found on mosque walls, tilework, and carpets from Spain to Central Asia.</li>
+        <li><strong>Structural Elements of the Mosque:</strong> the dome, minaret, muqarnas (honeycomb vaulting), and open courtyard each carry spiritual meaning, with the mosque itself functioning as the heart of the city — simultaneously a place of worship, learning, and community life.</li>
+      </ul>
+      <p>The unifying theological logic is Tawhid: by avoiding the depiction of living beings and instead repeating abstract, infinite, non-representational forms, Islamic art continually points to a Creator who is one, transcendent, and beyond depiction — turning the built environment itself into a meditation on Allah's Oneness rather than a celebration of any human ruler or artist.</p>
+
+      <h4>Three Iconic Monuments, Three Continents</h4>
+      <ul>
+        <li><strong>Masjid al-Haram, Makkah (Asia):</strong> the holiest site in Islam, demonstrating Islam's role as a single unifying spiritual centre — the qibla toward which 1.9 billion Muslims worldwide pray, and the destination of the annual Hajj.</li>
+        <li><strong>Alhambra Palace, Granada (Europe):</strong> demonstrates the artistic and intellectual sophistication of Islamic civilisation in Andalusia, combining geometric tilework, arabesque, and muqarnas at the height of Muslim Spain.</li>
+        <li><strong>Hassan II Mosque, Casablanca (Africa):</strong> one of the largest mosques in the world, with one of the tallest minarets, demonstrating the continued vitality and scale of Islamic architectural tradition into the modern era.</li>
+      </ul>
+      <div class="src-tag">Sources: Sahih Muslim, Hadith 91; Qur'an 7:31; Grabar, O., The Formation of Islamic Art, Yale UP (1973).</div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="line"></span>
+    <svg viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" fill="none" stroke="#AD8A33" stroke-width="1.2"/></svg>
+    <span class="line"></span>
+  </div>
+
+  <!-- ============ Q11 ============ -->
+  <section class="q" id="q11">
+    <div class="q-eyebrow">Question 11</div>
+    <p class="q-text">Aqeedah governs not what a Muslim does but what a Muslim must believe with absolute certainty. State and explain ALL SIX Pillars of Islamic Faith (Arkan al-Iman) with ONE Qur'anic reference for each pillar. Then explain in one clear paragraph the fundamental difference between Aqeedah and Fiqh, and why a scholar who masters Fiqh but neglects Aqeedah produces legal rulings without theological grounding.</p>
+    <div class="a-label">Answer</div>
+    <div class="answer">
+      <h4>The Six Pillars of Faith (Arkan al-Iman)</h4>
+      <ol>
+        <li><strong>Belief in Allah:</strong> absolute Tawhid — Allah is One, unique, without partners, offspring, or equals. <em>(Qur'an 112:1–4)</em></li>
+        <li><strong>Belief in Angels:</strong> beings created from light who execute Allah's commands and never disobey. <em>(Qur'an 2:285)</em></li>
+        <li><strong>Belief in the Divine Books:</strong> the Torah, Psalms (Zabur), Gospel (Injil), and the Qur'an — only the Qur'an survives in its original, unaltered form. <em>(Qur'an 4:136)</em></li>
+        <li><strong>Belief in the Prophets:</strong> 124,000 prophets sent to every nation, with Muhammad ﷺ as the final prophet; rejecting any one of them is considered a rejection of all. <em>(Qur'an 33:40)</em></li>
+        <li><strong>Belief in the Last Day:</strong> resurrection, judgment, the Sirat, and the certainty of Jannah or Jahannam. <em>(Qur'an 99:1–8)</em></li>
+        <li><strong>Belief in Divine Decree (Qadar):</strong> all events occur within Allah's knowledge and will, while human free will operates within that preordainment. <em>(Qur'an 54:49)</em></li>
+      </ol>
+
+      <h4>Aqeedah vs. Fiqh</h4>
+      <p>Aqeedah concerns the fixed, unchanging matters of belief that every Muslim must affirm with absolute certainty (yaqin) — the unseen realities of Allah, the angels, the books, the prophets, the Last Day, and Qadar — and on these core articles, legitimate scholarly disagreement is not possible. Fiqh, by contrast, concerns the practical and often debatable rulings governing outward action — worship, transactions, family law — derived through juristic reasoning, which is precisely why scholars can differ in good faith on Fiqh (producing the four Sunni schools) while never differing on Aqeedah's foundations. A scholar who masters the legal mechanics of Fiqh while neglecting Aqeedah risks issuing technically sound rulings that have lost sight of their ultimate purpose — that every act of obedience is meant to serve and worship Allah alone — leaving the rulings legally correct but theologically rootless.</p>
+      <div class="src-tag">Sources: Qur'an 112:1–4; 2:285; 4:136; 33:40; 99:1–8; 54:49; Al-Tahawi, Al-Aqeedah al-Tahawiyyah; Sahih Muslim, Book 1, Hadith 1 (Hadith of Jibril).</div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="line"></span>
+    <svg viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" fill="none" stroke="#AD8A33" stroke-width="1.2"/></svg>
+    <span class="line"></span>
+  </div>
+
+  <!-- ============ Q12 ============ -->
+  <section class="q" id="q12">
+    <div class="q-eyebrow">Question 12</div>
+    <p class="q-text">Judaism is described in the lecture as the oldest Abrahamic faith and the tradition closest to Islamic monotheism in its concept of God. Explain the Jewish concept of God using the Shema, describe the role of the Torah and Talmud as sacred texts, identify THREE core ethical principles of Judaism — Tikkun Olam, Tzedakah, and the prohibition of Lashon Hara — and explain the Islamic position on Judaism with reference to Qur'an 5:44 and Qur'an 2:87.</p>
+    <div class="a-label">Answer</div>
+    <div class="answer">
+      <h4>The Jewish Concept of God — the Shema</h4>
+      <blockquote class="scripture">"Hear O Israel, the LORD our God, the LORD is One." <cite>The Shema, Deuteronomy 6:4</cite></blockquote>
+      <p>The Shema expresses a strict, indivisible monotheism (Echad) — God is one, with no plurality of persons, no incarnation, and no concept of a literal "son of God." This is precisely why the lecture identifies Judaism's God-concept as the closest of the religions studied to Islamic Tawhid, in sharp contrast to Christianity's Trinity, which Islam regards as a departure from pure monotheism.</p>
+
+      <h4>Torah and Talmud</h4>
+      <p>The <strong>Torah</strong> (the Five Books of Moses — Genesis, Exodus, Leviticus, Numbers, Deuteronomy) is the primary written divine revelation, forming part of the wider Tanakh together with the Prophets (Nevi'im) and the Writings (Ketuvim). The <strong>Talmud</strong> is the Oral Law — the Mishnah combined with the Gemara, a vast body of rabbinic commentary spanning over sixty volumes — through which the Torah's commandments are interpreted and applied in practice.</p>
+
+      <h4>Three Core Ethical Principles</h4>
+      <ul>
+        <li><strong>Tikkun Olam</strong> — "repairing the world" through active acts of justice.</li>
+        <li><strong>Tzedakah</strong> — charity treated as a binding religious obligation rather than an optional gift.</li>
+        <li><strong>The prohibition of Lashon Hara</strong> — evil or harmful speech (gossip, slander), strictly regulated within Jewish law (halakha).</li>
+      </ul>
+
+      <h4>The Islamic Position</h4>
+      <p>Islam honours Musa (Moses, AS) and Ibrahim (Abraham, AS) as among the greatest of the prophets and affirms the divine origin of the Torah:</p>
+      <blockquote class="scripture">"Indeed, We sent down the Torah, in which was guidance and light." <cite>Qur'an 5:44</cite></blockquote>
+      <p>At the same time, the Qur'an records that some among the Children of Israel rejected or even killed prophets sent to correct distortions that had crept into the transmitted text over time:</p>
+      <blockquote class="scripture">"...a party [of prophets] you called liars and another party you killed." <cite>Qur'an 2:87 (paraphrased)</cite></blockquote>
+      <p>So Islam affirms the genuine divine origin of the Torah while holding that parts of its transmitted text were altered over the centuries — a position of respect for the source alongside a claim that the Qur'an alone remains textually preserved.</p>
+      <div class="src-tag">Sources: Deuteronomy 6:4; Qur'an 5:44; Qur'an 2:87; Solomon, N., Judaism: A Very Short Introduction, OUP (2000).</div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="line"></span>
+    <svg viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" fill="none" stroke="#AD8A33" stroke-width="1.2"/></svg>
+    <span class="line"></span>
+  </div>
+
+  <!-- ============ Q13 ============ -->
+  <section class="q" id="q13">
+    <div class="q-eyebrow">Question 13</div>
+    <p class="q-text">The Muslim army grew from 313 soldiers at Badr (2 AH) to 30,000 at Tabuk (9 AH). For any THREE of the five major campaigns — Badr, Uhud, Khandaq, Conquest of Makkah, and Tabuk — describe the force sizes, the key tactical lesson, and the outcome. Then identify the moral discipline code the Prophet ﷺ enforced upon every soldier, stating specifically what categories of people and property were absolutely forbidden from harm.</p>
+    <div class="a-label">Answer</div>
+    <div class="answer">
+      <h4>Three Major Campaigns</h4>
+      <ul>
+        <li><strong>Badr — 2 AH (624 CE), 313 soldiers:</strong> the Muslims were outnumbered roughly 3-to-1 against the Quraysh force. Tactical lesson: faith, unity, and discipline could overturn a severe material disadvantage. Outcome: a decisive Muslim victory that established Madinah as a serious power in Arabia.</li>
+        <li><strong>Uhud — 3 AH (625 CE), 700 soldiers:</strong> tactical lesson: strict obedience to command is essential in battle — the archers stationed on the hill abandoned their post to gather spoils, exposing the Muslim flank to a Quraysh cavalry manoeuvre. Outcome: 70 Muslims were martyred, a costly but formative setback.</li>
+        <li><strong>Khandaq (the Trench) — 5 AH (627 CE), 3,000 soldiers:</strong> facing a confederate force of roughly 10,000, the Muslims dug a defensive trench around exposed Madinah, an innovative tactic. Tactical lesson: defensive innovation can neutralise a far larger besieging force. Outcome: the alliance was repelled without a major pitched battle.</li>
+      </ul>
+
+      <h4>The Moral Discipline Code</h4>
+      <p>The Prophet ﷺ required strict moral conduct from every soldier, holding each one personally accountable for any breach. Specifically forbidden from harm in war were: <strong>women, children, the elderly, monks and religious clergy, and crops</strong> (along with non-combatant property more broadly) — meaning that even amid active warfare, the protection of non-combatants and the preservation of the land itself were treated as inviolable obligations, not optional restraint.</p>
+      <div class="src-tag">Sources: Ibn Hisham, Sirat Ibn Hisham; Al-Mubarakpuri, Ar-Raheeq al-Makhtum; Watt, W. M., Muhammad at Medina, OUP (1956).</div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="line"></span>
+    <svg viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" fill="none" stroke="#AD8A33" stroke-width="1.2"/></svg>
+    <span class="line"></span>
+  </div>
+
+  <!-- ============ Q14 ============ -->
+  <section class="q" id="q14">
+    <div class="q-eyebrow">Question 14</div>
+    <p class="q-text">Arabic is described in the lecture as the sacred language of Islam and the universal language of Islamic scholarship. Explain why mastery of Arabic is considered essential for engagement with all Islamic primary sources, describe FOUR sciences within the Arabic language — Nahw, Sarf, Balagha, and Adab — and explain how Islamic civilisation used Arabic as a vehicle to elevate Persian, Urdu, Turkish, and Swahili into rich literary languages of Islamic expression.</p>
+    <div class="a-label">Answer</div>
+    <div class="answer">
+      <h4>Why Arabic Mastery Is Essential</h4>
+      <p>Arabic is the language in which the Qur'an itself was revealed, and the Prophet ﷺ said:</p>
+      <blockquote class="scripture">"Love Arabic for three reasons: because I am an Arab, the Qur'an is in Arabic, and the people of Paradise will speak Arabic." <cite>Al-Tabarani, Al-Mu'jam al-Awsat</cite></blockquote>
+      <p>Without command of Arabic grammar, morphology, and rhetoric, direct and unmediated engagement with the Qur'an, Hadith, and the entire corpus of classical Fiqh and Tafsir is impossible — every translation inevitably loses precision present in the original text.</p>
+
+      <h4>Four Sciences of the Arabic Language</h4>
+      <ul>
+        <li><strong>Nahw (Syntax/Grammar):</strong> the structural rules of the language; foundational text: Sibawayhi's <em>Al-Kitab</em>.</li>
+        <li><strong>Sarf (Morphology):</strong> the study of word patterns and derivation, essential for understanding root-based meaning in the Qur'an.</li>
+        <li><strong>Balagha (Rhetoric):</strong> the science of eloquence and figures of speech, indispensable for appreciating the Qur'an's literary inimitability (I'jaz).</li>
+        <li><strong>Adab (Literature):</strong> poetry and belles-lettres, including the pre-Islamic Mu'allaqat tradition and later genres such as the maqamat (rhymed prose).</li>
+      </ul>
+
+      <h4>Arabic as a Vehicle for Other Languages</h4>
+      <p>As Islam spread, Arabic scholarship became the channel through which other languages were elevated into vehicles of Islamic literary and intellectual expression: <strong>Persian</strong> became a major language of Islamic philosophy and mystical poetry (as in the work of Rumi); <strong>Urdu</strong> emerged as a literary synthesis of Arabic, Persian, and South Asian languages; and <strong>Turkish</strong> and <strong>Swahili</strong> likewise developed into rich written languages of Islamic scholarship and literature. This demonstrates Islam's linguistic inclusivity, even as Arabic retained its unique status as the sacred language of revelation itself.</p>
+      <div class="src-tag">Sources: Al-Tabarani, Al-Mu'jam al-Awsat; Sibawayhi, Al-Kitab; Qur'an 12:2; Ibn Khaldun, Al-Muqaddimah.</div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="line"></span>
+    <svg viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" fill="none" stroke="#AD8A33" stroke-width="1.2"/></svg>
+    <span class="line"></span>
+  </div>
+
+  <!-- ============ Q15 ============ -->
+  <section class="q" id="q15">
+    <div class="q-eyebrow">Question 15</div>
+    <p class="q-text">The Halal and Haram food system in Islam is rooted in divine legislation, not cultural preference. Using Qur'an 2:168 and Qur'an 5:3, explain the principles that determine whether food is Halal, identify FOUR specific categories of Haram food with their Qur'anic or Hadith evidence, and explain how the global Halal food industry today — valued at over three trillion dollars — demonstrates the enduring economic and civilisational relevance of these 7th-century divine laws.</p>
+    <div class="a-label">Answer</div>
+    <div class="answer">
+      <h4>The Governing Principle</h4>
+      <blockquote class="scripture">"O mankind! Eat of that which is lawful and good on the earth, and do not follow the footsteps of Satan." <cite>Qur'an 2:168</cite></blockquote>
+      <p>This verse establishes the two-part standard that governs all Islamic food law: permissibility (halal) and wholesomeness/purity (tayyib) together — lawfulness alone is not enough; the food must also be good and clean. Qur'an 5:3 then specifies the concrete categories of what is prohibited.</p>
+
+      <h4>Four Categories of Haram Food</h4>
+      <ul>
+        <li><strong>Pork and its by-products</strong> <em>(Qur'an 2:173; 5:3)</em></li>
+        <li><strong>Carrion</strong> — animals not properly slaughtered, found dead <em>(Qur'an 5:3)</em></li>
+        <li><strong>Blood</strong> <em>(Qur'an 5:3; 2:168)</em></li>
+        <li><strong>Intoxicants</strong> — wine and other intoxicating substances, described as an abomination from the work of Satan <em>(Qur'an 5:90)</em></li>
+      </ul>
+      <p>The law also requires that an animal be slaughtered while invoking Allah's name (Tasmiyah), and forbids carnivorous predatory animals as food.</p>
+
+      <h4>Contemporary Economic Relevance</h4>
+      <p>The global Halal food and lifestyle industry today spans food, finance, cosmetics, and travel across both Muslim-majority and Muslim-minority markets, with course material citing a value of over three trillion dollars (figures of this kind vary somewhat by source and year, but the scale is consistently in the trillions). This contemporary market is a direct, unbroken continuation of dietary principles first legislated in the Qur'an some 1,400 years ago — concrete evidence that these are not arbitrary or merely cultural restrictions, but durable, economically scalable divine legislation with continuing civilisational relevance today.</p>
+      <div class="src-tag">Sources: Qur'an 2:168; 2:173; 5:3; 5:90; Sunan Abu Dawud #2356.</div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="line"></span>
+    <svg viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16,14 18,21 12,17 6,21 8,14 2,9 9,9" fill="none" stroke="#AD8A33" stroke-width="1.2"/></svg>
+    <span class="line"></span>
+  </div>
+
+  <!-- ============ Q16 ============ -->
+  <section class="q" id="q16">
+    <div class="q-eyebrow">Question 16</div>
+    <p class="q-text">The six Pillars of Islamic Faith and the Five Pillars of Islamic Practice together form the complete framework of a Muslim's life. Explain the FIVE Pillars of Islamic Practice — Shahadah, Salah, Zakah, Sawm, and Hajj — providing for each pillar its definition, its Qur'anic basis, and one way it contributes to the social cohesion and collective welfare of the Muslim community beyond its individual spiritual dimension.</p>
+    <div class="a-label">Answer</div>
+    <div class="answer">
+      <table class="cmp">
+        <tr><th>Pillar</th><th>Definition</th><th>Qur'anic Basis</th><th>Social Contribution</th></tr>
+        <tr><td class="label">Shahadah</td><td>The declaration that there is no god but Allah, and Muhammad ﷺ is His messenger — the entry into Islam and the foundation of all practice</td><td>Qur'an 47:19</td><td>Creates a single shared identity-marker uniting Muslims as one Ummah, regardless of race, language, or nationality</td></tr>
+        <tr><td class="label">Salah</td><td>Five daily prayers at fixed times, the direct connection between servant and Creator</td><td>Qur'an 29:45 — "prayer prohibits immorality and wrongdoing"</td><td>Congregational and Friday (Jumu'ah) prayers create regular, structured community contact across social and economic lines</td></tr>
+        <tr><td class="label">Zakah</td><td>Obligatory annual charity of 2.5% of eligible wealth, which purifies one's remaining wealth</td><td>Commanded repeatedly alongside Salah throughout the Qur'an (e.g. 2:43, 2:110)</td><td>Functions as a systematic wealth-redistribution mechanism, narrowing inequality and reliably supporting the poor, travelers, and debtors</td></tr>
+        <tr><td class="label">Sawm</td><td>Fasting from dawn to sunset throughout the month of Ramadan</td><td>Qur'an 2:183 — "fasting is prescribed for you... that you may attain piety"</td><td>Communal Iftar meals and nightly Tarawih prayers throughout the month build some of the strongest annual bonds of community solidarity in Islam</td></tr>
+        <tr><td class="label">Hajj</td><td>Pilgrimage to Makkah once in a lifetime, obligatory for those physically and financially able</td><td>Qur'an 3:97</td><td>The largest annual gathering of humanity on earth, uniting millions of Muslims of every race, nationality, and class in identical dress performing identical rites — the ultimate practical demonstration of human equality before Allah</td></tr>
+      </table>
+      <div class="src-tag">Sources: Qur'an 47:19; 29:45; 2:183; 3:97; Sahih al-Bukhari, Hadith 8 (Hadith of the Five Pillars).</div>
+    </div>
+  </section>
+
+  <footer>
+    HUM 4241 / 4237 — Islamic History, Science and Culture · Islamic University of Technology (IUT)<br>
+    Prepared from Lectures 5–10 (Seerah, Branches of Islamic Knowledge, Major World Religions, Islamic Culture) for midterm review.
+  </footer>
+
+</div>
+</body>
+</html>
