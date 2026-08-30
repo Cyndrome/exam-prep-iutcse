@@ -41,9 +41,9 @@ A rectangular wooden block measuring 20 cm × 10 cm × 8 cm floats in water with
 ---
 
 ### 7. (Hard) Two-Liquid Comparison
-A ball floats in water with 30% of its volume above the surface. The same ball is then placed in oil (density = 850 kg/m³) and floats with 10% of its volume above the surface.
+A ball floats in water with 32% of its volume above the surface. The same ball is then placed in oil (density = 850 kg/m³) and floats with 20% of its volume above the surface.
 (a) Find the density of the ball using the water data.
-(b) Verify your answer is consistent using the oil data (within reasonable rounding).
+(b) Verify your answer is consistent using the oil data.
 
 ---
 
