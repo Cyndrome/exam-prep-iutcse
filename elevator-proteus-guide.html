@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Building the Elevator Control System in Proteus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#eef1f4;
+  --card:#ffffff;
+  --ink:#16202b;
+  --ink-soft:#4d5e6e;
+  --rule:#c8d2db;
+  --steel:#2c3a47;
+  --amber:#c47f00;
+  --amber-glow:#ffab1f;
+  --up:#1f7a4d;
+  --down:#b03030;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#11171d;
+    --card:#18202a;
+    --ink:#e6edf3;
+    --ink-soft:#9fb0c0;
+    --rule:#2d3b49;
+    --steel:#cfdae5;
+    --amber:#ffb62e;
+    --amber-glow:#ffcc5c;
+    --up:#4ec98a;
+    --down:#ff7b6b;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#11171d;
+  --card:#18202a;
+  --ink:#e6edf3;
+  --ink-soft:#9fb0c0;
+  --rule:#2d3b49;
+  --steel:#cfdae5;
+  --amber:#ffb62e;
+  --amber-glow:#ffcc5c;
+  --up:#4ec98a;
+  --down:#ff7b6b;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"IBM Plex Sans",-apple-system,Segoe UI,Roboto,sans-serif;
+  font-size:17px;
+  line-height:1.62;
+}
+.wrap{max-width:820px;margin:0 auto;padding:0 20px 96px}
+h1,h2,h3{font-family:"Space Grotesk","IBM Plex Sans",sans-serif;line-height:1.2;letter-spacing:-0.01em}
+h1{font-size:clamp(1.9rem,5.2vw,2.9rem);font-weight:700;margin:0 0 14px}
+h2{font-size:clamp(1.35rem,3.6vw,1.75rem);font-weight:700;margin:56px 0 4px}
+h3{font-size:1.08rem;font-weight:500;margin:30px 0 6px}
+p,li{max-width:74ch}
+a{color:var(--amber);text-underline-offset:3px}
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:0.89em}
+code{background:color-mix(in srgb,var(--steel) 10%,transparent);padding:1px 5px;border-radius:3px;white-space:nowrap}
+
+/* hero */
+header{padding:56px 0 8px}
+.panel{
+  display:flex;gap:10px;align-items:flex-end;margin-bottom:30px;
+  padding:16px 18px;border-radius:6px;background:var(--steel);
+  width:max-content;max-width:100%;
+}
+.floor{
+  font-family:"IBM Plex Mono",monospace;font-size:1.5rem;font-weight:500;
+  width:44px;height:52px;display:grid;place-items:center;border-radius:4px;
+  color:color-mix(in srgb,var(--paper) 30%,transparent);
+  background:rgba(0,0,0,.25);
+}
+.floor.lit{color:var(--amber-glow);background:rgba(0,0,0,.45);text-shadow:0 0 14px var(--amber-glow)}
+.arrow{font-size:1.1rem;color:var(--up);padding-bottom:16px}
+.lede{font-size:1.1rem;color:var(--ink-soft);max-width:66ch}
+
+/* table of contents */
+nav.toc{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:18px 0;margin:36px 0 0}
+nav.toc ol{margin:0;padding-left:1.4em;columns:2;column-gap:36px}
+nav.toc li{margin:3px 0;break-inside:avoid}
+nav.toc a{color:var(--ink);text-decoration:none;border-bottom:1px solid transparent}
+nav.toc a:hover,nav.toc a:focus{border-bottom-color:var(--amber)}
+
+.stage-no{
+  font-family:"IBM Plex Mono",monospace;font-size:.78rem;color:var(--amber);
+  display:block;margin-top:56px;margin-bottom:-2px;
+}
+h2.stage{margin-top:2px}
+
+.scroll{overflow-x:auto;margin:18px 0;border:1px solid var(--rule);border-radius:5px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:.92rem;min-width:520px}
+th,td{text-align:left;padding:9px 13px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-weight:600;background:color-mix(in srgb,var(--steel) 8%,transparent);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.mono,th.mono{font-family:"IBM Plex Mono",monospace;font-size:.86rem}
+
+.note{
+  border-left:3px solid var(--amber);background:var(--card);
+  padding:12px 16px;margin:20px 0;border-radius:0 5px 5px 0;
+}
+.note p{margin:0}
+.note p + p{margin-top:8px}
+
+ul.check{list-style:none;padding-left:0}
+ul.check li{padding-left:26px;position:relative;margin:7px 0}
+ul.check li::before{content:"";position:absolute;left:4px;top:.62em;width:9px;height:9px;border:1.5px solid var(--amber);border-radius:2px}
+
+footer{margin-top:72px;padding-top:20px;border-top:1px solid var(--rule);color:var(--ink-soft);font-size:.92rem}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+@media (max-width:620px){nav.toc ol{columns:1}body{font-size:16px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="panel" role="img" aria-label="Floor indicator showing floor 2, moving up">
+    <span class="arrow">▲</span>
+    <span class="floor">3</span>
+    <span class="floor lit">2</span>
+    <span class="floor">1</span>
+    <span class="floor">0</span>
+  </div>
+  <h1>Smart Multi-Floor Elevator Control System</h1>
+  <p class="lede">A complete build guide for the Proteus schematic — every chip, every pin, every wire, in the order you should draw them. No prior Proteus experience assumed.</p>
+</header>
+
+<nav class="toc" aria-label="Contents">
+<ol>
+  <li><a href="#how">How the circuit works</a></li>
+  <li><a href="#install">Getting Proteus open</a></li>
+  <li><a href="#ui">The five tools you need</a></li>
+  <li><a href="#parts">Parts list</a></li>
+  <li><a href="#rules">Four rules before you wire</a></li>
+  <li><a href="#s1">Stage 1 — Buttons and priority encoder</a></li>
+  <li><a href="#s2">Stage 2 — Target floor register</a></li>
+  <li><a href="#s3">Stage 3 — Magnitude comparator</a></li>
+  <li><a href="#s4">Stage 4 — Emergency latch and override</a></li>
+  <li><a href="#s5">Stage 5 — Up/down counter</a></li>
+  <li><a href="#s6">Stage 6 — Seven-segment display</a></li>
+  <li><a href="#s7">Stage 7 — Decoder as arrival demux</a></li>
+  <li><a href="#s8">Stage 8 — Adder for distance</a></li>
+  <li><a href="#s9">Stage 9 — Shift register chaser</a></li>
+  <li><a href="#nets">Master signal list</a></li>
+  <li><a href="#test">Test plan</a></li>
+  <li><a href="#trouble">When it doesn't work</a></li>
+  <li><a href="#viva">Viva questions</a></li>
+</ol>
+</nav>
+
+<h2 id="how">How the circuit works</h2>
+<p>Before drawing anything, hold the whole loop in your head. It is one signal path with a feedback leg:</p>
+<p class="mono" style="color:var(--ink-soft);font-size:.87rem">buttons → priority encoder → target register → comparator → direction signals → up/down counter → current floor → back into the comparator</p>
+<p>The comparator asks one question on every clock tick: is the target above, below, or equal to where we are? Above means count up, below means count down, equal means stop. Because the counter output feeds straight back into the comparator, the system settles by itself the moment the two match. Everything else — displays, LEDs, the chaser, the distance readout — hangs off that spine as an observer.</p>
+
+<h3>Signal naming convention used throughout</h3>
+<div class="scroll">
+<table>
+<tr><th>Signal</th><th>Width</th><th>Meaning</th></tr>
+<tr><td class="mono">T1, T0</td><td>2</td><td>Target floor, latched</td></tr>
+<tr><td class="mono">C1, C0</td><td>2</td><td>Current floor, from counter</td></tr>
+<tr><td class="mono">UP, DN, STOP</td><td>1 each</td><td>Direction decision (after override mux)</td></tr>
+<tr><td class="mono">EMG</td><td>1</td><td>Emergency latched, active high</td></tr>
+<tr><td class="mono">RST</td><td>1</td><td>System reset, <em>active low</em></td></tr>
+<tr><td class="mono">CLK</td><td>1</td><td>2 Hz clock, shared by counter and shift register</td></tr>
+</table>
+</div>
+<p>A bar over a pin name in Proteus (or a small circle on the pin) means active low — the chip does that job when the pin is pulled to 0, not 1. Half of all wiring mistakes in this project come from ignoring those circles.</p>
+
+<span class="stage-no">Setup</span>
+<h2 class="stage" id="install">Getting Proteus open</h2>
+<ol>
+  <li>Launch <strong>Proteus 8 Professional</strong>. The window that opens is the Home tab, not the editor.</li>
+  <li>Click <strong>New Project</strong>. Give it a name and a folder you can find again.</li>
+  <li>On the next page choose <strong>Create a schematic from the selected template</strong> → <em>DEFAULT</em>.</li>
+  <li>On the PCB page choose <strong>Do not create a PCB layout</strong>.</li>
+  <li>On the firmware page choose <strong>No Firmware Project</strong>. Click Next, then Finish.</li>
+</ol>
+<p>You now have a schematic sheet — the blue-bordered rectangle is your drawing area. Everything must sit inside it. Scroll-wheel zooms, holding the middle button pans, and <code>F8</code> zooms to fit the whole sheet.</p>
+<div class="note"><p>Save now and save often with <code>Ctrl+S</code>. Proteus will happily crash on a bad wire.</p></div>
+
+<h2 id="ui">The five tools you need</h2>
+<p>The vertical toolbar on the far left is mode selection. You only need five of its buttons.</p>
+<div class="scroll">
+<table>
+<tr><th>Mode</th><th>Icon</th><th>What it does</th></tr>
+<tr><td><strong>Selection</strong></td><td>arrow</td><td>Move, delete, and edit things already placed. Press <code>Esc</code> to get back here.</td></tr>
+<tr><td><strong>Component</strong></td><td>AND-gate symbol</td><td>Shows your picked-parts list. Click a part, then click the sheet to place it.</td></tr>
+<tr><td><strong>Terminal</strong></td><td>small arrow-tag</td><td>Gives you POWER, GROUND, and named INPUT/OUTPUT tags.</td></tr>
+<tr><td><strong>Generator</strong></td><td>sine wave</td><td>Signal sources. You need DCLOCK from here.</td></tr>
+<tr><td><strong>Debug (Probe)</strong></td><td>small pointer with dot</td><td>Logic probes that show 1/0 live during simulation.</td></tr>
+</table>
+</div>
+<h3>Picking a component</h3>
+<p>In Component mode, click the <strong>P</strong> button at the top of the parts panel. Type the part name into <em>Keywords</em>, double-click the matching row, keep typing the next name, then close the dialog. All the parts you picked now sit in the panel, ready to place. You only pick a part once no matter how many you place.</p>
+<h3>Drawing a wire</h3>
+<p>Hover over a pin end until a green square appears, click once, move, click on the destination pin. Click once mid-air to force a corner. To delete a wire, right-click it twice (first right-click selects, second deletes) or select and press <code>Delete</code>.</p>
+
+<h2 id="parts">Parts list</h2>
+<p>Pick all of these in one go. The keyword column is exactly what you type into the P dialog.</p>
+<div class="scroll">
+<table>
+<tr><th>Block</th><th class="mono">Keyword</th><th>Qty</th><th>Role here</th></tr>
+<tr><td>Hex inverter</td><td class="mono">74LS04</td><td>2</td><td>Active-low conversions, subtractor complement</td></tr>
+<tr><td>Quad AND</td><td class="mono">74LS08</td><td>1</td><td>Encoder logic, chaser gating</td></tr>
+<tr><td>Quad OR</td><td class="mono">74LS32</td><td>2</td><td>Encoder logic, enable gating</td></tr>
+<tr><td>Quad D flip-flop</td><td class="mono">74LS175</td><td>1</td><td>Target floor register</td></tr>
+<tr><td>Dual D flip-flop</td><td class="mono">74LS74</td><td>1</td><td>Emergency stop latch</td></tr>
+<tr><td>4-bit comparator</td><td class="mono">74LS85</td><td>1</td><td>Target vs current floor</td></tr>
+<tr><td>4-bit adder</td><td class="mono">74LS83</td><td>1</td><td>Distance to target</td></tr>
+<tr><td>Quad 2-to-1 mux</td><td class="mono">74LS157</td><td>2</td><td>Operand swap + manual override</td></tr>
+<tr><td>Dual 2-to-4 decoder</td><td class="mono">74LS139</td><td>1</td><td>Floor arrival demux</td></tr>
+<tr><td>Up/down counter</td><td class="mono">74LS191</td><td>1</td><td>Current floor</td></tr>
+<tr><td>Bidirectional shift register</td><td class="mono">74LS194</td><td>1</td><td>Motion chaser LEDs</td></tr>
+<tr><td>BCD to 7-segment</td><td class="mono">74LS47</td><td>2</td><td>Floor display, distance display</td></tr>
+<tr><td>Display</td><td class="mono">7SEG-COM-ANODE</td><td>2</td><td>Digits</td></tr>
+<tr><td>Push button</td><td class="mono">BUTTON</td><td>6</td><td>4 floor calls, emergency, reset</td></tr>
+<tr><td>SPST switch</td><td class="mono">SW-SPST</td><td>3</td><td>Override enable, manual up, manual down</td></tr>
+<tr><td>LEDs</td><td class="mono">LED-GREEN, LED-RED, LED-YELLOW</td><td>8+</td><td>Direction, status, arrival, chaser</td></tr>
+<tr><td>Resistor</td><td class="mono">RES</td><td>~20</td><td>Pull-downs, pull-ups, LED limiting</td></tr>
+</table>
+</div>
+<div class="note"><p>If a keyword returns nothing, drop the family letters: search <code>7483</code> instead of <code>74LS83</code>, or <code>74HC157</code>. The pin names and behaviour are identical across families.</p></div>
+
+<h2 id="rules">Four rules before you wire</h2>
+<h3>1. Power comes from terminals, not from chip pins</h3>
+<p>Proteus connects VCC and GND to 74-series parts automatically, so you will not see power pins on the symbols. You still need explicit power for the discrete parts. In <strong>Terminal mode</strong>, place a <code>POWER</code> terminal, double-click it, and set its <em>String</em> to <code>VCC</code>; place a <code>GROUND</code> terminal and leave it. Drop a few pairs around the sheet rather than dragging one wire everywhere.</p>
+<h3>2. Use wire labels instead of long wires</h3>
+<p>This is the single most important habit for a schematic this size. Draw a short stub off a pin, then with the wire selected press <code>A</code> (or right-click → <em>Place Wire Label</em>) and type a name such as <code>T0</code>. Any other stub anywhere on the sheet labelled <code>T0</code> is now electrically the same node. Use the exact names from the signal table — capitalisation matters.</p>
+<h3>3. No input may float</h3>
+<p>An unconnected input in Proteus is neither 1 nor 0, and it poisons everything downstream. Every unused input on every chip gets tied to VCC or GND. Unused gate inputs go to GND. Unused data inputs go to GND. Unused active-low control pins go to VCC.</p>
+<h3>4. Buttons need a resistor</h3>
+<p>A Proteus <code>BUTTON</code> is just a switch. For an active-high button: VCC → button → node, and a 10k resistor from that node to GND. For an active-low button: GND → button → node, and a 10k resistor from the node to VCC. Change a resistor's value by double-clicking it and typing <code>10k</code> or <code>220R</code>.</p>
+
+<span class="stage-no">Stage 1 of 9</span>
+<h2 class="stage" id="s1">Buttons and the 4-to-2 priority encoder</h2>
+<p>Four call buttons must collapse into a 2-bit floor number. If two are pressed at once the higher floor wins, which is what makes it a <em>priority</em> encoder. Build it from gates — it is only three expressions, and you can defend every one of them in the viva.</p>
+<p class="mono">Y1 = I3 + I2<br>Y0 = I3 + (I1 · I2′)<br>V&nbsp; = I3 + I2 + I1 + I0</p>
+<ol>
+  <li>Place four <code>BUTTON</code>s in a column. Wire each one VCC → button → node, with a 10k resistor from node to GND.</li>
+  <li>Label the four nodes <code>I0</code>, <code>I1</code>, <code>I2</code>, <code>I3</code>.</li>
+  <li>Place one <code>74LS32</code> (call it the encoder OR chip), one <code>74LS08</code>, one <code>74LS04</code>.</li>
+  <li><strong>Y1:</strong> OR gate 1 inputs = <code>I3</code>, <code>I2</code>. Label output <code>Y1</code>.</li>
+  <li><strong>Y0:</strong> inverter 1 input = <code>I2</code>, output to AND gate 1 along with <code>I1</code>. AND output plus <code>I3</code> into OR gate 2. Label output <code>Y0</code>.</li>
+  <li><strong>V:</strong> OR gate 3 takes <code>I1</code> and <code>I0</code>; OR gate 4 takes that result and <code>Y1</code> (since Y1 already equals I3+I2). Label the final output <code>V</code>.</li>
+</ol>
+<p>Verify on paper before moving on: pressing I2 alone gives Y1Y0 = 10 = floor 2. Pressing I1 and I2 together gives 10 as well, because I2′ kills the I1 term.</p>
+
+<span class="stage-no">Stage 2 of 9</span>
+<h2 class="stage" id="s2">Target floor register — 74LS175</h2>
+<p>The encoder output disappears the instant you release the button. The register holds it until the elevator arrives. <code>V</code> going high is the clock edge that captures the call.</p>
+<div class="scroll">
+<table>
+<tr><th class="mono">Pin</th><th>Connect to</th></tr>
+<tr><td class="mono">D1</td><td class="mono">Y0</td></tr>
+<tr><td class="mono">D2</td><td class="mono">Y1</td></tr>
+<tr><td class="mono">D3, D4</td><td>GND (unused)</td></tr>
+<tr><td class="mono">CLK</td><td class="mono">V</td></tr>
+<tr><td class="mono">MR / CLR</td><td class="mono">RST</td></tr>
+<tr><td class="mono">Q1</td><td>label <code>T0</code></td></tr>
+<tr><td class="mono">Q2</td><td>label <code>T1</code></td></tr>
+</table>
+</div>
+<p>Build the reset now, since three chips will use it. Place a <code>BUTTON</code>, wire GND → button → node, 10k from node to VCC, and label the node <code>RST</code>. Pressing it drives the line low, which is what every CLR pin wants. Because MR clears the register to 00, a reset means "target is floor 0".</p>
+
+<span class="stage-no">Stage 3 of 9</span>
+<h2 class="stage" id="s3">Magnitude comparator — 74LS85</h2>
+<p>This is the brain. It is a 4-bit part and you only have 2 bits, so the top half gets grounded.</p>
+<div class="scroll">
+<table>
+<tr><th class="mono">Pin</th><th>Connect to</th><th>Why</th></tr>
+<tr><td class="mono">A0, A1</td><td class="mono">T0, T1</td><td>A side carries the target</td></tr>
+<tr><td class="mono">B0, B1</td><td class="mono">C0, C1</td><td>B side carries the current floor</td></tr>
+<tr><td class="mono">A2, A3, B2, B3</td><td>GND</td><td>Unused high bits must match, not float</td></tr>
+<tr><td class="mono">A&gt;B (cascade in)</td><td>GND</td><td rowspan="3">Cascade inputs set the tie-break for a single-stage comparator</td></tr>
+<tr><td class="mono">A&lt;B (cascade in)</td><td>GND</td></tr>
+<tr><td class="mono">A=B (cascade in)</td><td>VCC</td></tr>
+<tr><td class="mono">A&gt;B (out)</td><td>label <code>UP_A</code></td><td>Target is above us</td></tr>
+<tr><td class="mono">A&lt;B (out)</td><td>label <code>DN_A</code></td><td>Target is below us</td></tr>
+<tr><td class="mono">A=B (out)</td><td>label <code>EQ_A</code></td><td>Arrived — hold position</td></tr>
+</table>
+</div>
+<div class="note"><p>Getting the cascade inputs wrong is the classic 74LS85 failure: leave A=B low and the outputs never assert equality, so the elevator runs past its floor forever. On the symbol these three sit on the left edge, separate from the A and B groups.</p></div>
+
+<span class="stage-no">Stage 4 of 9</span>
+<h2 class="stage" id="s4">Emergency latch and manual override</h2>
+<h3>The emergency flip-flop — 74LS74</h3>
+<p>Use one half of the chip as a set-reset latch through its asynchronous pins, which is the most reliable way to catch a single button press.</p>
+<div class="scroll">
+<table>
+<tr><th class="mono">Pin</th><th>Connect to</th></tr>
+<tr><td class="mono">1D, 1CLK</td><td>GND</td></tr>
+<tr><td class="mono">1PRE</td><td>Emergency button node (GND → button → node, 10k pull-up to VCC)</td></tr>
+<tr><td class="mono">1CLR</td><td class="mono">RST</td></tr>
+<tr><td class="mono">1Q</td><td>label <code>EMG</code></td></tr>
+<tr><td class="mono">2D, 2CLK, 2PRE, 2CLR</td><td>2D and 2CLK to GND; 2PRE and 2CLR to VCC</td></tr>
+</table>
+</div>
+<p>Press emergency and <code>EMG</code> stays high until you press reset. Hang a yellow LED off <code>EMG</code>: <code>EMG</code> → 220R → LED anode, LED cathode → GND.</p>
+<h3>The override mux — 74LS157 (first one)</h3>
+<p>Three SPST switches let a technician drive the car by hand. The mux chooses whether the direction signals come from the comparator or from the switches.</p>
+<p>Wire each SPST as VCC → switch → node → 10k → GND, and label the nodes <code>OVR</code>, <code>M_UP</code>, <code>M_DN</code>. You also need <code>M_STOP = NOT(M_UP OR M_DN)</code>: one OR gate and one inverter.</p>
+<div class="scroll">
+<table>
+<tr><th class="mono">Pin</th><th>Connect to</th><th>Output label</th></tr>
+<tr><td class="mono">1A / 1B</td><td class="mono">UP_A / M_UP</td><td class="mono">1Y → UP</td></tr>
+<tr><td class="mono">2A / 2B</td><td class="mono">DN_A / M_DN</td><td class="mono">2Y → DN</td></tr>
+<tr><td class="mono">3A / 3B</td><td class="mono">EQ_A / M_STOP</td><td class="mono">3Y → STOP</td></tr>
+<tr><td class="mono">4A, 4B</td><td>GND</td><td>unused</td></tr>
+<tr><td class="mono">A/B (select)</td><td class="mono">OVR</td><td>low = automatic, high = manual</td></tr>
+<tr><td class="mono">E (enable, active low)</td><td>GND</td><td>always enabled</td></tr>
+</table>
+</div>
+<p>Place a green LED on <code>UP</code> and a red LED on <code>DN</code>, each through 220R to GND.</p>
+
+<span class="stage-no">Stage 5 of 9</span>
+<h2 class="stage" id="s5">Synchronous up/down counter — 74LS191</h2>
+<p>The 74LS191 is the right choice because it has one clock and a direction pin, unlike the 74LS193 which needs two separate clocks.</p>
+<p>First, the enable. The counter must freeze when it has arrived <em>or</em> when the emergency latch is set. Its enable pin <code>CTEN</code> is active low, so a single OR gate does the job: <code>CTEN = STOP + EMG</code>.</p>
+<div class="scroll">
+<table>
+<tr><th class="mono">Pin</th><th>Connect to</th><th>Why</th></tr>
+<tr><td class="mono">CLK</td><td class="mono">CLK</td><td>Shared 2 Hz clock</td></tr>
+<tr><td class="mono">D/U</td><td class="mono">DN</td><td>High counts down, low counts up</td></tr>
+<tr><td class="mono">CTEN</td><td>output of the OR gate above</td><td>Active low — high means hold</td></tr>
+<tr><td class="mono">PL (load, active low)</td><td class="mono">RST</td><td>Reset jumps the car to floor 0</td></tr>
+<tr><td class="mono">A, B, C, D</td><td>GND</td><td>The value loaded on reset: 0000</td></tr>
+<tr><td class="mono">QA</td><td>label <code>C0</code></td><td rowspan="2">Feeds back into the comparator</td></tr>
+<tr><td class="mono">QB</td><td>label <code>C1</code></td></tr>
+<tr><td class="mono">QC, QD</td><td>leave unconnected</td><td>Outputs may float; only inputs may not</td></tr>
+<tr><td class="mono">MAX/MIN, RCO</td><td>leave unconnected</td><td>Only needed for cascading</td></tr>
+</table>
+</div>
+<h3>The clock</h3>
+<p>Switch to <strong>Generator mode</strong>, choose <code>DCLOCK</code>, and place it on the sheet. Double-click it, set <em>Frequency</em> to <code>2</code> Hz, and set its name to <code>CLK</code>. Two hertz is slow enough to watch the floors change but fast enough not to test your patience.</p>
+<div class="note"><p>The counter can reach 4–15 in principle. It never does here, because the comparator stops it the moment it equals a target that is always 0–3 and it always starts from 0. If you want belt and braces, AND the QC and QD outputs into the CTEN OR gate.</p></div>
+
+<span class="stage-no">Stage 6 of 9</span>
+<h2 class="stage" id="s6">Seven-segment floor display — 74LS47</h2>
+<p>The 74LS47 has active-low outputs, which is exactly why it pairs with a common-anode display and not a common-cathode one.</p>
+<ol>
+  <li>Place a <code>74LS47</code> and a <code>7SEG-COM-ANODE</code> next to each other.</li>
+  <li>Inputs: <code>A</code> → <code>C0</code>, <code>B</code> → <code>C1</code>, <code>C</code> → GND, <code>D</code> → GND.</li>
+  <li>Control pins <code>LT</code>, <code>RBI</code> and <code>BI/RBO</code> all go to VCC. Leaving these floating is why a display sometimes shows nothing at all.</li>
+  <li>Place seven <code>RES</code> at 220R between decoder outputs a–g and the display pins a–g. Match them one for one.</li>
+  <li>The display's common pin goes to VCC.</li>
+</ol>
+<div class="note"><p>Tedious but worth it: select all seven resistors, double-click one, and Proteus lets you edit them as a group. Or place a <code>RESPACK-8</code> resistor array instead of seven discretes.</p></div>
+
+<span class="stage-no">Stage 7 of 9</span>
+<h2 class="stage" id="s7">Floor arrival indicators — 74LS139 as a demux</h2>
+<p>A 2-to-4 decoder with an enable pin <em>is</em> a 1-to-4 demultiplexer: the enable is the data input and the address selects which output it appears on. Here the data is "we have stopped" and the address is the current floor, so exactly one arrival lamp lights, and only when the car is at rest.</p>
+<div class="scroll">
+<table>
+<tr><th class="mono">Pin</th><th>Connect to</th></tr>
+<tr><td class="mono">1A</td><td class="mono">C0</td></tr>
+<tr><td class="mono">1B</td><td class="mono">C1</td></tr>
+<tr><td class="mono">1E (enable, active low)</td><td><code>STOP</code> through one inverter</td></tr>
+<tr><td class="mono">1Y0 … 1Y3</td><td>four LEDs, see below</td></tr>
+<tr><td class="mono">2A, 2B</td><td>GND</td></tr>
+<tr><td class="mono">2E</td><td>VCC (disables the unused half)</td></tr>
+</table>
+</div>
+<p>The outputs are active low, so the LEDs are wired the other way round from usual: VCC → 220R → LED anode, LED cathode → the Y output. The chip sinks the current. Draw all four identically and they will light one at a time.</p>
+
+<span class="stage-no">Stage 8 of 9</span>
+<h2 class="stage" id="s8">Distance display — 74LS157 + 74LS83</h2>
+<p>An adder subtracts by adding the two's complement: <code>X − Z = X + Z′ + 1</code>. The catch is that the answer is negative when the car is travelling down, and a negative binary number on a seven-segment display is nonsense. The fix is to feed the bigger number in first, which is what the second mux is for.</p>
+<h3>The operand swap — 74LS157 (second one)</h3>
+<div class="scroll">
+<table>
+<tr><th class="mono">Channel</th><th class="mono">A input</th><th class="mono">B input</th><th>Output label</th></tr>
+<tr><td>1</td><td class="mono">T0</td><td class="mono">C0</td><td class="mono">X0</td></tr>
+<tr><td>2</td><td class="mono">T1</td><td class="mono">C1</td><td class="mono">X1</td></tr>
+<tr><td>3</td><td class="mono">C0</td><td class="mono">T0</td><td class="mono">Z0</td></tr>
+<tr><td>4</td><td class="mono">C1</td><td class="mono">T1</td><td class="mono">Z1</td></tr>
+</table>
+</div>
+<p>Select pin → <code>DN</code>, enable pin → GND. Going up, the target is larger and goes into X. Going down, the current floor is larger and goes into X. Either way X ≥ Z, so the result is a positive distance.</p>
+<h3>The subtractor — 74LS83</h3>
+<div class="scroll">
+<table>
+<tr><th class="mono">Pin</th><th>Connect to</th></tr>
+<tr><td class="mono">A1, A2</td><td class="mono">X0, X1</td></tr>
+<tr><td class="mono">A3, A4</td><td>GND</td></tr>
+<tr><td class="mono">B1, B2</td><td><code>Z0</code>, <code>Z1</code> each through an inverter</td></tr>
+<tr><td class="mono">B3, B4</td><td>VCC (inverted zero is one)</td></tr>
+<tr><td class="mono">C0</td><td>VCC (this is the +1)</td></tr>
+<tr><td class="mono">S1, S2</td><td>Second 74LS47, inputs A and B</td></tr>
+<tr><td class="mono">S3, S4, C4</td><td>leave unconnected</td></tr>
+</table>
+</div>
+<p>Wire the second 74LS47 and display exactly as in stage 6, with its C and D inputs to GND. It now reads the number of floors still to travel, counting down to 0 on arrival.</p>
+
+<span class="stage-no">Stage 9 of 9</span>
+<h2 class="stage" id="s9">Motion chaser — 74LS194</h2>
+<p>The 74LS194 shifts left, shifts right, loads, or holds depending on two mode pins. Map them straight onto the direction signals and the LED pattern walks in the direction the car is moving, and freezes when it stops.</p>
+<div class="scroll">
+<table>
+<tr><th class="mono">S1</th><th class="mono">S0</th><th>Mode</th><th>When</th></tr>
+<tr><td>0</td><td>0</td><td>Hold</td><td>Idle or emergency</td></tr>
+<tr><td>0</td><td>1</td><td>Shift right</td><td>Going down</td></tr>
+<tr><td>1</td><td>0</td><td>Shift left</td><td>Going up</td></tr>
+<tr><td>1</td><td>1</td><td>Parallel load</td><td>Reset — seeds the pattern</td></tr>
+</table>
+</div>
+<p>Two gating expressions get you there. Take <code>NOT EMG</code> from a spare inverter and <code>NOT RST</code> from another (call it <code>RST_H</code>, reset active high):</p>
+<p class="mono">S1 = (UP · EMG′) + RST_H<br>S0 = (DN · EMG′) + RST_H</p>
+<div class="scroll">
+<table>
+<tr><th class="mono">Pin</th><th>Connect to</th></tr>
+<tr><td class="mono">CLK</td><td class="mono">CLK</td></tr>
+<tr><td class="mono">S1, S0</td><td>the two gated signals above</td></tr>
+<tr><td class="mono">MR / CLR</td><td>VCC (reset is handled by the load instead)</td></tr>
+<tr><td class="mono">A, B, C, D</td><td>VCC, GND, GND, GND — the seed pattern 1000</td></tr>
+<tr><td class="mono">SL (shift-left serial in)</td><td class="mono">QA</td></tr>
+<tr><td class="mono">SR (shift-right serial in)</td><td class="mono">QD</td></tr>
+<tr><td class="mono">QA … QD</td><td>four LEDs, each through 220R to GND</td></tr>
+</table>
+</div>
+<p>Feeding QA and QD back in turns the register into a ring, so the single lit LED circles round instead of vanishing after four clocks. Hold the reset button for a second at power-up to load the seed — without it the register starts at 0000 and nothing ever lights.</p>
+<div class="note"><p>Simpler variant if the feedback confuses you: tie SL and SR to VCC and MR to <code>RST</code>. The LEDs then fill up like a progress bar while moving and clear on reset. It satisfies the same requirement.</p></div>
+
+<h2 id="nets">Master signal list</h2>
+<p>Use this to audit the sheet once everything is placed. Every label should appear exactly as many times as the row says.</p>
+<div class="scroll">
+<table>
+<tr><th class="mono">Label</th><th>Driven by</th><th>Read by</th></tr>
+<tr><td class="mono">I0–I3</td><td>Call buttons</td><td>Encoder gates</td></tr>
+<tr><td class="mono">Y0, Y1, V</td><td>Encoder gates</td><td>74LS175 D and CLK</td></tr>
+<tr><td class="mono">T0, T1</td><td>74LS175 Q1, Q2</td><td>74LS85 A side, 74LS157 #2</td></tr>
+<tr><td class="mono">C0, C1</td><td>74LS191 QA, QB</td><td>74LS85 B side, 74LS47 #1, 74LS139, 74LS157 #2</td></tr>
+<tr><td class="mono">UP_A, DN_A, EQ_A</td><td>74LS85</td><td>74LS157 #1 (A inputs)</td></tr>
+<tr><td class="mono">OVR, M_UP, M_DN</td><td>SPST switches</td><td>74LS157 #1 select and B inputs</td></tr>
+<tr><td class="mono">UP, DN, STOP</td><td>74LS157 #1</td><td>Counter, LEDs, 74LS139, 74LS157 #2, 74LS194</td></tr>
+<tr><td class="mono">EMG</td><td>74LS74 1Q</td><td>CTEN OR gate, yellow LED, chaser gating</td></tr>
+<tr><td class="mono">RST</td><td>Reset button</td><td>74LS175 MR, 74LS74 1CLR, 74LS191 PL, chaser gating</td></tr>
+<tr><td class="mono">CLK</td><td>DCLOCK generator</td><td>74LS191, 74LS194</td></tr>
+<tr><td class="mono">X0, X1, Z0, Z1</td><td>74LS157 #2</td><td>74LS83</td></tr>
+</table>
+</div>
+
+<h2 id="test">Test plan</h2>
+<p>Press the blue <strong>play</strong> button at the bottom left to simulate. Pins turn red for logic 1, blue for logic 0, and grey for floating. Run these in order — each one isolates a different block, so the first failure tells you where to look.</p>
+<ul class="check">
+  <li>Hold reset for one second. Display reads <strong>0</strong>, distance reads <strong>0</strong>, the floor-0 arrival LED lights, one chaser LED is on.</li>
+  <li>Press the floor 3 button once and release. The display counts 0, 1, 2, 3 at half-second intervals, the green LED is on throughout, the distance display counts 3, 2, 1, 0, the chaser walks one way.</li>
+  <li>On arrival: green LED off, counting stops, floor-3 arrival LED lights, chaser freezes.</li>
+  <li>Press floor 1. The car counts down, red LED on, chaser walks the other way.</li>
+  <li>Press floor 2 and floor 3 together. The car goes to 3 — priority works.</li>
+  <li>Mid-travel, press emergency. Everything freezes and the yellow LED latches on. Pressing floor buttons does nothing. Reset clears it.</li>
+  <li>Flip the override switch, then flip manual up. The car moves with no target set. Flip both off and it stops.</li>
+</ul>
+<p>To watch a signal you cannot see, switch to <strong>Debug mode</strong> and drop a <code>LOGICPROBE</code> onto any wire. It shows the live value during simulation.</p>
+
+<h2 id="trouble">When it doesn't work</h2>
+<div class="scroll">
+<table>
+<tr><th>Symptom</th><th>Cause</th></tr>
+<tr><td>Grey pins everywhere</td><td>A floating input upstream. Trace back to the first grey pin and tie it off.</td></tr>
+<tr><td>Nothing moves at all</td><td>No clock placed, or the DCLOCK is not actually touching the CLK net, or CTEN is stuck high.</td></tr>
+<tr><td>Car never stops at the target</td><td>74LS85 cascade A=B input is not at VCC, or C0/C1 feedback is reversed.</td></tr>
+<tr><td>Car runs the wrong way</td><td>D/U polarity: high means down on the 74LS191. Swap <code>UP</code> and <code>DN</code> if your part behaves differently — check the symbol for the bar over U or D.</td></tr>
+<tr><td>Display is blank</td><td>LT / RBI / BI pins not at VCC, or a common-cathode display was placed instead of common anode.</td></tr>
+<tr><td>Display shows a garbled digit</td><td>Segment wires crossed. Check a–g are in order on both chips.</td></tr>
+<tr><td>Target resets every clock</td><td>The 74LS175 clock is wired to CLK instead of V.</td></tr>
+<tr><td>Two wires look joined but aren't</td><td>Crossing wires only connect where a solid dot appears. Delete and redraw the junction.</td></tr>
+<tr><td>Simulation refuses to start</td><td>Read the <em>Simulation Log</em> tab at the bottom — it names the offending part.</td></tr>
+</table>
+</div>
+
+<h2 id="viva">Viva questions worth preparing</h2>
+<ul>
+  <li><strong>Why a priority encoder and not a plain encoder?</strong> Two simultaneous presses on a plain encoder produce a garbage OR of both codes — pressing floors 1 and 2 would output 3, a floor nobody asked for.</li>
+  <li><strong>Why synchronous and not ripple?</strong> All flip-flops in the 74LS191 change on the same edge, so the comparator never sees a transient intermediate count and cannot issue a false stop.</li>
+  <li><strong>Why is the emergency stop asynchronous?</strong> Safety inputs must not wait for a clock edge. The PRE pin acts immediately, independent of CLK.</li>
+  <li><strong>Where is the feedback loop?</strong> Counter output → comparator input → counter direction and enable. It is a closed-loop control system, which is why it settles rather than oscillating.</li>
+  <li><strong>What limits it to four floors?</strong> The 2-bit bus. Eight floors needs 3 bits: an 8-to-3 encoder, three comparator bit pairs, a 3-to-8 decoder, and two display digits.</li>
+</ul>
+
+<footer>
+<p>Build it stage by stage and simulate after each one. Nine small working circuits are far easier to debug than one large broken one.</p>
+</footer>
+
+</div>
+</body>
+</html>
