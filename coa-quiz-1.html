@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fundamentals and Trends in Computer Design</title>
+<style>
+:root{--bg:#fbfbfa;--fg:#1d2330;--mut:#5d6575;--line:#dde1e8;--acc:#1f5fbf;--soft:#eef2f9;--warn:#fff5e0;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14171d;--fg:#e4e7ee;--mut:#9aa3b5;--line:#2b313d;--acc:#7fb0ff;--soft:#1c212b;--warn:#2a2416}}
+:root[data-theme="dark"]{--bg:#14171d;--fg:#e4e7ee;--mut:#9aa3b5;--line:#2b313d;--acc:#7fb0ff;--soft:#1c212b;--warn:#2a2416}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 "Source Serif 4",Charter,Georgia,serif}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:200px minmax(0,1fr);gap:48px}
+nav{position:sticky;top:20px;align-self:start;padding:32px 0;font:15px/1.5 system-ui,sans-serif;max-height:100vh;overflow:auto}
+nav a{display:block;padding:4px 0;color:var(--mut);text-decoration:none}
+nav a:hover{color:var(--acc)}
+nav b{display:block;margin-bottom:8px}
+main{max-width:70ch;padding:32px 0 80px}
+h1{font-size:2.2rem;line-height:1.2;margin:0 0 8px}
+h2{font-size:1.5rem;line-height:1.3;margin:3.2rem 0 .6rem;padding-top:1.2rem;border-top:1px solid var(--line)}
+h3{font-size:1.1rem;margin:1.8rem 0 .3rem}
+.sub{color:var(--mut);font:15px/1.5 system-ui,sans-serif;margin:0 0 1.5rem}
+.read{font:14px/1.5 system-ui,sans-serif;background:var(--soft);border-left:3px solid var(--acc);padding:8px 12px;margin:0 0 1rem;color:var(--mut)}
+p,ul,ol{margin:.7rem 0}ul{padding-left:1.3rem}ul ul{margin:.2rem 0}
+li{margin:.25rem 0}
+code,.f{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.92em}
+.f{display:block;background:var(--soft);padding:10px 14px;margin:.9rem 0;overflow-x:auto;white-space:nowrap}
+.note{background:var(--warn);padding:10px 14px;margin:1rem 0;font-size:.96em}
+.tw{overflow-x:auto;margin:1rem 0}
+table{border-collapse:collapse;font:15px/1.5 system-ui,sans-serif;min-width:100%}
+th,td{border-bottom:1px solid var(--line);padding:6px 12px;text-align:left;white-space:nowrap}
+th{font-weight:600}
+.calc{font:15px/1.5 system-ui,sans-serif;background:var(--soft);padding:14px;margin:1rem 0}
+.calc label{display:block;margin:6px 0}
+.calc input[type=range]{width:100%;max-width:360px;display:block}
+.out{font-size:1.05rem;margin-top:8px}
+a:focus-visible,input:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+@media (max-width:820px){.wrap{display:block}nav{position:static;padding:20px 0 0;max-height:none}nav a{display:inline-block;margin-right:14px}nav b{display:none}main{padding-top:8px}body{font-size:17px}}
+:root{--c1:#0f766e;--c2:#1d4ed8;--c3:#7c3aed;--c4:#c2410c;--c5:#15803d;--c6:#be185d;--c7:#b91c1c;--c8:#a16207;--c9:#4338ca}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--c1:#2dd4bf;--c2:#60a5fa;--c3:#a78bfa;--c4:#fb923c;--c5:#4ade80;--c6:#f472b6;--c7:#f87171;--c8:#fbbf24;--c9:#818cf8}}
+:root[data-theme="dark"]{--c1:#2dd4bf;--c2:#60a5fa;--c3:#a78bfa;--c4:#fb923c;--c5:#4ade80;--c6:#f472b6;--c7:#f87171;--c8:#fbbf24;--c9:#818cf8}
+main{--c:var(--c2)}
+h1{border-bottom:4px solid var(--acc);padding-bottom:10px}
+h2{color:var(--c);border-top:3px solid var(--c)}
+h3{color:var(--c)}
+li::marker{color:var(--c)}
+b{font-weight:600;background:color-mix(in srgb,var(--c) 17%,transparent);padding:0 .25em;border-radius:3px}
+.f{background:color-mix(in srgb,var(--c) 10%,var(--bg));border-left:4px solid var(--c)}
+th{background:color-mix(in srgb,var(--c) 15%,var(--bg))}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--c) 4%,var(--bg))}
+.read{border-left-color:var(--acc);background:color-mix(in srgb,var(--acc) 9%,var(--bg))}
+.calc{border-top:4px solid var(--c);background:color-mix(in srgb,var(--c) 8%,var(--bg))}
+.calc input[type=range]{accent-color:var(--c)}
+nav a::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--c);margin-right:8px}
+nav a.on{color:var(--c);font-weight:600}
+h1{background:linear-gradient(90deg,var(--c2),var(--c3),var(--c6));-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{background:color-mix(in srgb,var(--c) 13%,var(--bg));padding:.55rem .9rem;border-radius:6px;border-top:none;border-left:6px solid var(--c)}
+h3{border-left:4px solid var(--c);padding-left:.6rem}
+b{background:color-mix(in srgb,var(--c) 28%,transparent)}
+.f{background:color-mix(in srgb,var(--c) 14%,var(--bg));border-radius:0 6px 6px 0;font-weight:600}
+th{background:color-mix(in srgb,var(--c) 26%,var(--bg))}
+code{color:var(--c);background:color-mix(in srgb,var(--c) 11%,transparent);padding:0 .3em;border-radius:3px}
+li.ex{list-style:none;margin-left:-1.2rem;padding:8px 12px;background:color-mix(in srgb,var(--c) 12%,var(--bg));border-left:4px solid var(--c);border-radius:0 6px 6px 0}
+nav a.on{background:color-mix(in srgb,var(--c) 14%,transparent);border-radius:4px;padding-left:6px}
+#bar{position:fixed;top:0;left:0;height:4px;width:0;z-index:20;background:linear-gradient(90deg,var(--c1),var(--c2),var(--c3),var(--c4),var(--c5),var(--c6),var(--c7),var(--c8),var(--c9))}
+</style>
+</head>
+<body>
+<div id="bar" aria-hidden="true"></div>
+<div class="wrap">
+<nav aria-label="Sections">
+<b>Contents</b>
+<a href="#overview">Big picture</a>
+<a href="#components">Components and memory</a>
+<a href="#chip">From sand to chip</a>
+<a href="#trends">Technology trends</a>
+<a href="#performance">Performance</a>
+<a href="#spec">SPEC CPU benchmark</a>
+<a href="#power">Power and energy</a>
+<a href="#cost">Cost trends</a>
+<a href="#amdahl">Amdahl’s law</a>
+</nav>
+<main>
+<h1>Fundamentals and Trends in Computer Design</h1>
+<p class="sub">CSE 4305 Computer Organization and Architecture · Lecture 1 · Imtiaj Ahmed Chowdhury, IUT</p>
+<p class="read">Assigned reading covered: Patterson and Hennessy, <i>Computer Organization and Design, RISC-V Edition</i> §1.6 (Performance) and the SPEC CPU Benchmark subsection of §1.9; the Thermal Design Power article up to its Calculation section. Optional: Intel Turbo Boost vs AMD Turbo Core.</p>
+
+<p class="read">Source status: the Thermal Design Power section was checked against the Wikipedia article. Extra points marked “CA:AQA” come from the uploaded Hennessy and Patterson, Computer Architecture: A Quantitative Approach (7th ed.), Ch. 1: §1.4–1.6 (technology, power and energy, cost), §1.9 (measuring and summarizing performance, SPEC) and §1.10 (performance equation, Amdahl’s law). The RISC-V edition’s §1.6 and §1.9 were not available, so their topics are covered through these equivalent sections. The slides’ SPEC counts differ slightly from this book (noted below).</p>
+<h2 id="overview">Big picture</h2>
+<ul>
+<li>Computing then: Difference Engine (1820), Z3 (1941), ENIAC (1945), built from gears, relays and vacuum tubes.</li>
+<li>Computing now: phones, smart spoons, shoes, cricket ball sensors, the Summit supercomputer.</li>
+<li>The course is about why parts are organized the way they are, not about assembling them.</li>
+<li>Running example, a phone SoC (A20 Pro, 2 nm):
+<ul>
+<li>6-core CPU: 2 performance cores at 4.93 GHz, 4 efficiency cores at 2.64 GHz</li>
+<li>7-core GPU, 32-core neural engine</li>
+<li>12 GB LPDDR5X memory in the same package</li>
+</ul></li>
+<li>PMIC (power management IC):
+<ul>
+<li>Converts battery voltage into regulated supplies</li>
+<li>Scales voltage with clock speed (DVFS)</li>
+<li>Powers down idle blocks</li>
+</ul></li>
+<li>Themes to watch: heterogeneity, memory placement, power.</li>
+</ul>
+
+<h2 id="components">Components and memory hierarchy</h2>
+<h3>Five classic components</h3>
+<ul>
+<li>Input and output, reached through an I/O controller (USB, PCIe, NVMe)</li>
+<li>Memory</li>
+<li>Processor = control (fetch, decode, sequencing) + datapath (ALU, registers)</li>
+</ul>
+<h3>Why a hierarchy</h3>
+<ul>
+<li>Fast storage is small and expensive; large storage is slow.</li>
+<li>Example at 3 GHz (1 cycle ≈ 0.33 ns):</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Level</th><th>Latency</th><th>Typical size</th></tr>
+<tr><td>L1 cache</td><td>4–5 cycles, ~1.5 ns</td><td>64 KB per core</td></tr>
+<tr><td>L2 cache</td><td>12–15 cycles, ~4.5 ns</td><td>1 MB per core</td></tr>
+<tr><td>L3 cache</td><td>40–50 cycles, ~15 ns</td><td>32 MB shared</td></tr>
+<tr><td>DRAM</td><td>~80 ns</td><td>16 GB</td></tr>
+<tr><td>SSD</td><td>~50 µs</td><td>1 TB</td></tr>
+</table></div>
+<ul>
+<li>Latency ratios: L1 to DRAM ≈ 53×, L3 to DRAM ≈ 5×, DRAM to SSD ≈ 620×.</li>
+<li>Repeated cache misses pay these multipliers, so memory behaviour dominates real performance.</li>
+<li>Cache latency is in cycles (scales with clock); DRAM and SSD latency is in absolute time.</li>
+<li>On the A20 Pro die: L2 per core group, 3 × 12 MiB system-level cache (L3) shared by all blocks, 96-bit link to off-die LPDDR5X.</li>
+</ul>
+
+<h2 id="chip">From sand to chip</h2>
+<ul>
+<li><b>Silicon:</b> a semiconductor.
+<ul>
+<li>Doping turns tiny regions into conductors, insulators or switches; transistors are those switches.</li>
+<li>Electronic-grade silicon is refined from quartz sand to 99.9999999% purity.</li>
+</ul></li>
+<li><b>Ingot (boule):</b> single crystal pulled from molten silicon, up to ~2 m long.</li>
+<li><b>Wafer:</b> a slice of the ingot.
+<ul>
+<li>300 mm is the industry ceiling since 1999.</li>
+<li>450 mm was attempted and abandoned (tooling costs, inter-company tensions).</li>
+</ul></li>
+<li><b>Die:</b> one rectangular copy of the chip design on the wafer.
+<ul>
+<li>About 30–80 layers, each made by repeating four steps:</li>
+<li><i>Coat:</i> cover wafer with photoresist</li>
+<li><i>Print:</i> shine light through a mask (stencil of the layer pattern)</li>
+<li><i>Etch:</i> carve the pattern with gas plasma</li>
+<li><i>Add:</i> dopants (transistor layers) or metal (conductor and insulator layers)</li>
+</ul></li>
+<li>A 300 mm wafer holds ~640 dies of 100 mm² (area ≈ 70,700 mm², ~700 before edge losses).</li>
+</ul>
+<h3>After fabrication</h3>
+<ul>
+<li><b>Defects:</b> one flaw can ruin a die.</li>
+<li><b>Probing:</b> test dies, discard only bad dies, not the wafer. <b>Yield</b> = percentage of good dies.</li>
+<li><b>Dicing:</b> cut out the good dies.</li>
+<li><b>Bonding:</b> connect die contact points to package pins or pads.</li>
+<li><b>Packaging:</b> fill the gap under the die with resin and seal it.</li>
+<li>Link to cost: bigger dies catch more defects, so yield drops and cost per good chip rises.</li>
+</ul>
+
+<h2 id="trends">Technology trends</h2>
+<h3>Performance growth slowed</h3>
+<ul>
+<li>Single-processor performance (SPEC integer, vs VAX-11/780):
+<ul>
+<li>~25% per year until 1986</li>
+<li>~52% per year until ~2003</li>
+<li>then 23%, 12%, and about 3.5% per year</li>
+</ul></li>
+<li>Why: Moore’s law ending, Dennard scaling ending, the power wall.</li>
+</ul>
+<h3>Moore’s law</h3>
+<ul>
+<li>1965: transistors per chip double every year. 1975 amendment: every two years.</li>
+<li>A prediction, not a physical law.</li>
+<li>Leads to smaller transistors, which are also faster (size and speed are related).</li>
+<li>Why it is ending:
+<ul>
+<li>Economics: stacking more transistors raises cost.</li>
+<li>Physics: limit on how much fits in a unit area.</li>
+</ul></li>
+<li>Result: domain-specific processors (GPUs, NPUs) gain ground over general-purpose ones.</li>
+<li>CA:AQA §1.4 adds:
+<ul>
+<li>Transistor count grew about 40–55% per year (doubling every 18–24 months); the doubling time is now stretching.</li>
+<li>Density rises quadratically as feature size shrinks linearly; transistor speed improved roughly linearly. That gap is the architect’s opportunity.</li>
+<li>Density gains paid for wider words (4 to 64 bit), multiple cores, wider SIMD, speculation and caches.</li>
+<li>Wires do not scale like transistors: delay grows with resistance × capacitance, and both per unit length get worse. Wire delay is now often more critical than switching delay.</li>
+</ul></li>
+</ul>
+<h3>Dennard scaling (1974)</h3>
+<ul>
+<li>Shrink length L and width W by a factor k; electric field E stays constant (stronger E would break transistors).</li>
+<li>Area A = W·L shrinks by k².</li>
+<li>Voltage V = E·L shrinks by k.</li>
+<li>Delay t = L/v shrinks, so frequency f ∝ 1/t rises.</li>
+<li>Capacitance C = ε·A/L shrinks.</li>
+<li>Power falls:</li>
+</ul>
+<span class="f">P = C · V² · f   →   per transistor, power falls roughly as 1/k²</span>
+<ul>
+<li>Power and area fall in the same proportion, so <b>power density stays constant</b>.</li>
+<li>Chips got faster and denser without getting hotter; clock rates grew ~40% per year.</li>
+</ul>
+<h3>End of Dennard scaling and the power wall (~2006)</h3>
+<ul>
+<li>Chain of events:
+<ul>
+<li>Smaller transistors need lower supply voltage (~0.6–1.2 V) to keep the field constant</li>
+<li>Threshold voltage must drop too (~0.2–0.4 V)</li>
+<li>Smaller gap between “on” and “off”: transistors become hard to turn off</li>
+<li>More leakage current, more power dissipation, a hotter chip</li>
+<li>Heat raises leakage further: thermal runaway</li>
+</ul></li>
+<li>Cooling the extra power needs expensive technology, which raises price and loses customers.</li>
+<li><b>Dark silicon:</b> more transistors can be added, but not all can be active at once.</li>
+<li>Clock rates flattened near 3–4 GHz; power peaked around 100 W.</li>
+</ul>
+<h3>Shift to multiprocessors</h3>
+<ul>
+<li>Use multiple cores instead of one bigger core.</li>
+<li>Software must change: parallel programming is needed and is hard (deadlock, race conditions, load imbalance).</li>
+<li>Amdahl’s law (last section) shows how limited the payoff can be.</li>
+</ul>
+
+<h2 id="performance">Performance and benchmarking (§1.6)</h2>
+<h3>Defining performance</h3>
+<ul>
+<li>Performance = 1 / Execution time.</li>
+<li>“A is n times faster than B” means Time<sub>B</sub> / Time<sub>A</sub> = n.</li>
+<li><b>Response (elapsed) time:</b> all time the user waits, including I/O, OS overhead, other programs.</li>
+<li><b>CPU (execution) time:</b> time the CPU spends on this program only.
+<ul>
+<li>User CPU time: the program’s own code</li>
+<li>System CPU time: OS work done on its behalf</li>
+</ul></li>
+<li>Architects focus on CPU time because it isolates the processor.</li>
+<li>Clock cycles view:
+<ul>
+<li>CPU time = CPU clock cycles × cycle time = CPU clock cycles ÷ clock rate</li>
+<li>Cycle time and clock rate are inverses (250 ps cycle = 4 GHz)</li>
+<li>CPU clock cycles = instruction count × CPI</li>
+</ul></li>
+<li>Trade-off example: A runs a program in 10 s at 2 GHz (20 × 10⁹ cycles). To get 6 s, B needs a faster clock, but suppose B needs 1.2× the cycles (24 × 10⁹). Required clock = 24 × 10⁹ ÷ 6 s = <b>4 GHz</b>, i.e. 2× A’s clock, not the 1.67× you might expect.</li>
+<li>Only time is a complete performance measure; clock rate alone, instruction count alone or MIPS alone can mislead.</li>
+<li>CA:AQA §1.9–1.10 wording:
+<ul>
+<li>Users of a phone care about response time; a data-center operator cares about throughput (work per unit time).</li>
+<li>“X is n times as fast as Y” means Execution time<sub>Y</sub> / Execution time<sub>X</sub> = Performance<sub>X</sub> / Performance<sub>Y</sub> = n. “Throughput of X is 1.3× Y” means 1.3× as many tasks per unit time.</li>
+<li>Wall-clock (elapsed) time includes I/O and OS overhead; with multiprogramming the CPU works on other programs while waiting, hence CPU time.</li>
+<li>The authors’ position: the only consistent measure is the execution time of real programs.</li>
+</ul></li>
+<li>Processor equation details (CA:AQA §1.10):
+<ul>
+<li>IPC (instructions per clock) is the inverse of CPI.</li>
+<li>Units: (Instructions/Program) × (Clock cycles/Instruction) × (Seconds/Clock cycle) = Seconds/Program.</li>
+<li>A 10% improvement in any one of the three factors gives a 10% reduction in CPU time, but they are interdependent: cycle time ← technology and organization; CPI ← organization and ISA; instruction count ← ISA and compiler.</li>
+<li>With instruction classes: CPU time = (Σ IC<sub>i</sub> × CPI<sub>i</sub>) × cycle time. CPI<sub>i</sub> must be <b>measured</b>, not read from a manual, because it includes pipeline effects and cache misses.</li>
+<li>DVFS and turbo vary the clock during measurement; turn them off for reproducible results.</li>
+</ul></li>
+<li>Equation example (CA:AQA): 25% FP ops (CPI 4.0), others CPI 1.33, so CPI = 0.25×4 + 0.75×1.33 ≈ <b>2.0</b>. Option 1: FSQRT (2% of instructions, CPI 20 → 2) gives CPI = 2.0 − 0.02×18 = 1.64. Option 2: all FP CPI 4.0 → 2.5 gives CPI = 0.75×1.33 + 0.25×2.5 ≈ 1.625. Speedup = 2.0 ÷ 1.625 = <b>1.23×</b> for option 2.</li>
+</ul>
+<h3>Benchmarking</h3>
+<ul>
+<li>Run a typical workload on the target machine.</li>
+<li>Benchmark programs cover the common cases of the target domain, with the same source, inputs and compiler options.</li>
+<li>Report raw time, a rate (e.g. FLOPS), or a normalized score.</li>
+<li>Examples: SPEC CPU (CPU + memory + compiler), Cinebench (CPU and GPU rendering), High-Performance Linpack (basis of TOP500).</li>
+</ul>
+<h3>CPU performance equation</h3>
+<span class="f">CPU time = Instruction count × CPI × Clock cycle time = (Instruction count × CPI) / Clock rate</span>
+<ul>
+<li>CPI = average cycles per instruction. Clock rate = inverse of cycle time.</li>
+<li>Who controls each factor:
+<ul>
+<li>Instruction count: algorithm, compiler, ISA</li>
+<li>CPI: hardware organization (pipelining, caches, branch prediction), instruction mix</li>
+<li>Cycle time: hardware technology and design</li>
+</ul></li>
+<li>Improving one factor often hurts another.</li>
+<li>In practice you measure raw execution time; the equation tells the architect what to improve.</li>
+</ul>
+<h3>What affects each factor</h3>
+<ul>
+<li>Algorithm: instruction count, possibly CPI</li>
+<li>Programming language: instruction count, CPI</li>
+<li>Compiler: instruction count, CPI</li>
+<li>ISA: instruction count, CPI, clock rate</li>
+</ul>
+<h3>CPI in practice</h3>
+<ul>
+<li>CPI is an average over the program’s instruction mix: CPI = Σ (CPI<sub>i</sub> × fraction of instructions in class i).</li>
+<li>Example (same ISA, same instruction count I): A has 250 ps cycle and CPI 2.0; B has 500 ps cycle and CPI 1.2.
+<ul>
+<li>A: I × 2.0 × 250 ps = 500·I ps</li>
+<li>B: I × 1.2 × 500 ps = 600·I ps</li>
+<li>A is 600 ÷ 500 = <b>1.2× faster</b>, even though B has the lower CPI.</li>
+</ul></li>
+<li>Lesson: you must multiply all three factors; judging by one is a pitfall.</li>
+</ul>
+<h3>Worked example: same time, different bottlenecks</h3>
+<div class="tw"><table>
+<tr><th>Factor</th><th>Machine A</th><th>Machine B</th></tr>
+<tr><td>Instruction count</td><td>1.0 × 10⁹</td><td>3.0 × 10⁹</td></tr>
+<tr><td>CPI</td><td>1.5</td><td>0.5</td></tr>
+<tr><td>Cycle time</td><td>0.5 ns (2 GHz)</td><td>0.5 ns (2 GHz)</td></tr>
+<tr><td>CPU time</td><td>0.75 s</td><td>0.75 s</td></tr>
+</table></div>
+<ul>
+<li>A: 10⁹ × 1.5 × 0.5 ns = 0.75 s. B: 3×10⁹ × 0.5 × 0.5 ns = 0.75 s.</li>
+<li>A’s CPI is 3× B’s: improve hardware (pipelining, caches, branch prediction).</li>
+<li>B’s instruction count is 3× A’s: improve compiler and ISA (code generation, richer instructions).</li>
+</ul>
+
+<h2 id="spec">SPEC CPU benchmark (§1.9)</h2>
+<ul>
+<li>SPEC = System Performance Evaluation Cooperative.</li>
+<li>Suites measure compute-intensive performance of processor, memory hierarchy and compiler together.</li>
+<li>Series runs from SPEC CPU89 (first) to the newest generation; SPEC CPU2017 is the most common, with 43 programs in 4 suites.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Suite</th><th>Measures</th><th>Programs</th><th>Typical user</th></tr>
+<tr><td>SPECspeed (Int, FP)</td><td>Time for one task</td><td>10 + 10</td><td>Laptop or desktop</td></tr>
+<tr><td>SPECrate (Int, FP)</td><td>Throughput (work per unit time)</td><td>10 + 13</td><td>Cloud, servers</td></tr>
+</table></div>
+<ul>
+<li>SPECspeed rewards strong single-core performance with fast cache and memory.</li>
+<li>SPECrate rewards many cores, high memory bandwidth, large shared cache.</li>
+<li>CA:AQA §1.9 additions:
+<ul>
+<li>SPECrate runs as many copies as there are processors and converts CPU time to a rate. Example: 8 copies in half the reference time gives a SPECrate of 16.</li>
+<li><b>Base vs peak:</b> base requires the same compiler flags for all programs in a language; peak lets each program use its best flags. This limits “benchmarketing”.</li>
+<li>SPEC programs are real applications made portable and with little I/O (integer: part of a C compiler, a Go program, video compression; FP: molecular dynamics, image manipulation, weather).</li>
+<li>Criticisms: a third are partly Fortran, and they are statically linked, so they share little with modern software.</li>
+<li>The book lists 10 integer and 17 FP benchmarks in the speed suites, while the slides give 10 + 10 speed and 10 + 13 rate (43 programs). Use the slides’ counts for this course.</li>
+</ul></li>
+<li>Benchmark types and pitfalls (CA:AQA §1.9):
+<ul>
+<li>Best choice is real applications. Kernels, toy programs (e.g. quicksort) and synthetic benchmarks (e.g. Dhrystone) are discredited because compiler writers and architects can tune for them.</li>
+<li>Suites reduce the weakness of any single benchmark.</li>
+<li>Server benchmarks: TPC (transactions per second under a response-time limit, with cost reported), SPECstorage, SPECpower (ssj_ops), SPECvirt.</li>
+<li>Reporting principle: <b>reproducibility</b>; list everything another experimenter needs (hardware, compiler flags, baseline and optimized results).</li>
+</ul></li>
+</ul>
+<h3>Integer vs floating point</h3>
+<div class="tw"><table>
+<tr><th></th><th>Integer</th><th>Floating point</th></tr>
+<tr><td>Format</td><td>Exact, two’s complement</td><td>IEEE 754 sign, exponent, mantissa; rounded</td></tr>
+<tr><td>Work per add</td><td>One ALU pass</td><td>Align exponents, add, normalize, round</td></tr>
+<tr><td>Latency (recent x86)</td><td>Add 1 cycle, multiply 3</td><td>Add/multiply 2–4, divide 10–15</td></tr>
+<tr><td>Hardware</td><td>Simple ALUs, shared with address calculation</td><td>Separate FP registers, wide pipelined SIMD</td></tr>
+<tr><td>Code</td><td>Branches, pointers, irregular access</td><td>Array loops, one operation on many elements</td></tr>
+</table></div>
+<ul>
+<li>FP speed grows with silicon spent on vector units and memory bandwidth.</li>
+<li>Integer speed is capped by branches and dependencies.</li>
+<li>A single combined score could hide poor integer performance, so they are reported separately.</li>
+</ul>
+<h3>SPECratio and SPECscore</h3>
+<span class="f">SPECratio = Reference time ÷ Measured time     (bigger is better)</span>
+<ul>
+<li>CPU2017 reference machine: Sun Fire V490, 2.1 GHz UltraSPARC-IV+.</li>
+<li><b>SPECscore</b> = geometric mean of all SPECratios: (∏ SPECratio<sub>i</sub>)<sup>1/n</sup>.</li>
+<li>Key property: machine-vs-machine ratios are independent of the reference machine. The arithmetic mean lacks this.</li>
+<li>Why: SPECratios are dimensionless, and the geometric mean of ratios equals the ratio of geometric means, so GM(A) ÷ GM(B) is the same for any reference.</li>
+<li>Higher SPECscore means better; each program’s ratio is also published so strengths and weaknesses are visible.</li>
+<li>Integer (SPECint) and FP (SPECfp) scores are summarized separately, matching the table above.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Program</th><th>Machine A</th><th>Machine B</th><th>Ref X</th><th>Ref Y</th></tr>
+<tr><td>P1 (s)</td><td>1</td><td>4</td><td>4</td><td>2</td></tr>
+<tr><td>P2 (s)</td><td>8</td><td>4</td><td>8</td><td>32</td></tr>
+</table></div>
+<div class="tw"><table>
+<tr><th>Ref</th><th>SPECratios A</th><th>SPECratios B</th><th>Arithmetic mean</th><th>Geometric mean</th></tr>
+<tr><td>X</td><td>4, 1</td><td>1, 2</td><td>2.5 vs 1.5: A 1.67× faster</td><td>2.0 vs 1.41: A 1.41× faster</td></tr>
+<tr><td>Y</td><td>2, 4</td><td>0.5, 8</td><td>3.0 vs 4.25: B 1.42× faster</td><td>2.83 vs 2.0: A 1.41× faster</td></tr>
+</table></div>
+<ul>
+<li>Arithmetic mean: the winner flips from A to B just by changing the reference machine.</li>
+<li>Geometric mean: GM(A) ÷ GM(B) = √[(R₁/1)(R₂/8) ÷ (R₁/4)(R₂/4)] = √2 ≈ 1.41; R₁ and R₂ cancel.</li>
+</ul>
+
+<h2 id="power">Power and energy</h2>
+<h3>Power or energy?</h3>
+<ul>
+<li>E = P × t.</li>
+<li>Example: A draws 20% more power than B but finishes in 70% of the time, so energy = 1.2 × 0.7 = <b>0.84</b> of B’s.</li>
+<li>Takeaway: a processor can be more energy-efficient even if it draws more power.</li>
+<li>Use <b>energy</b> to compare efficiency on a task (the electric bill is based on energy).</li>
+<li>Treat <b>power</b> as a design limit (e.g. a chip capped at 100 W).</li>
+<li>Cloud with effectively endless work: average power can stand in for energy.</li>
+</ul>
+<h3>Systems view of power and energy (CA:AQA §1.5)</h3>
+<ul>
+<li>A designer has three concerns:
+<ul>
+<li><b>Peak power:</b> if a chip draws more current than the supply can give, voltage drops and devices malfunction. Processors vary voltage and slow down to stay inside this limit.</li>
+<li><b>Sustained power (TDP):</b> sets the cooling requirement. It is neither peak power (often ~1.5× higher) nor the average power of a computation (likely lower). Power supplies are sized above TDP; cooling is designed to match or exceed it.</li>
+<li><b>Energy and efficiency:</b> power is energy per unit time (1 W = 1 J/s).</li>
+</ul></li>
+<li>Energy is the right metric because it is tied to a task: energy = average power × execution time.</li>
+<li>“In the cloud the workload is infinite, so use average power” is misleading: a cloud full of processor Bs does less work for the same energy. Compare energy on a fixed workload (the electricity bill or smartphone battery life).</li>
+<li>Power is legitimately a <b>constraint</b> (e.g. an air-cooled chip limited to 300 W).</li>
+</ul>
+<h3>Power inside a CMOS chip (CA:AQA §1.5)</h3>
+<ul>
+<li>Dynamic energy per transistor switching pulse (0→1→0): proportional to capacitive load × voltage². A single transition is half of that.</li>
+<li>Dynamic power = ½ × capacitive load × voltage² × frequency switched.</li>
+<li>For a fixed task, slowing the clock reduces power but not energy. Lowering voltage cuts both (voltages fell from 5 V to just under 1 V in 20 years).</li>
+<li>Example: a 15% voltage cut that allows a 15% frequency cut gives energy = 0.85² = <b>0.72</b> and power = 0.72 × 0.85 = <b>0.61</b> of the original.</li>
+<li>Static (leakage) power flows even when a transistor is off and is proportional to the number of devices. Power gating turns off supply to idle modules. Leakage was targeted at 25% of total power in 2011 but can reach 50% in chips with large SRAM caches.</li>
+<li>Scale of the problem: a 2.4 GHz Xeon Platinum 8380 uses 270 W from a chip ~2.5 cm per side, near the limit of air cooling; chips with TDP near 1000 W need liquid cooling.</li>
+<li>Clock rates rose ~40% per year in 1986–2003, then went nearly flat. Energy, not silicon area, is now the major constraint.</li>
+<li>Metric shift: tasks per joule or performance per watt, rather than performance per mm² of silicon.</li>
+<li>Energy cost is uneven (7 nm figures): a 32-bit FP add uses ~50× the energy of an 8-bit integer add, and a DRAM access costs vastly more than any arithmetic operation, so data movement dominates.</li>
+<li>Carbon: CO₂e = energy (kWh) × CO₂e per kWh, and the second term varies 5–10× between regions. Architects help by raising efficiency and cutting embodied carbon in manufacturing.</li>
+</ul>
+<h3>Thermal design power (TDP)</h3>
+<ul>
+<li>Maximum heat a CPU, GPU or SoC can generate that its cooling system is designed to dissipate during normal operation at the base (non-turbo) clock.</li>
+<li>It is a nominal value for designing cooling, not the chip’s real power draw and not its peak.
+<ul>
+<li>Peak power is often quoted as about 1.5× TDP; GPUs show even bigger gaps.</li>
+<li>Example: a laptop cooler designed for 20 W TDP can dissipate 20 W without exceeding the maximum junction temperature.</li>
+</ul></li>
+<li>Cooling methods: active (heat sink with fan, conduction plus forced convection) or passive (radiation, conduction); usually combined.</li>
+<li>Underestimated TDP: strenuous loads (video encoding, games) can exceed it and overload cooling, causing throttling or a therm-trip (system failure).</li>
+<li>Calculation (heat path from CPU case to ambient air through the heat sink):
+<ul>
+<li>P<sub>d</sub> (W): heat to dissipate, equal to power drawn from the supply rails</li>
+<li>R<sub>ca</sub> (°C/W): heat sink thermal resistance, case to ambient</li>
+<li>T<sub>c</sub> (°C): maximum allowed case temperature for full performance</li>
+<li>T<sub>a</sub> (°C): maximum ambient temperature at the fan inlet</li>
+</ul></li>
+</ul>
+<span class="f">T<sub>c</sub> = T<sub>a</sub> + P<sub>d</sub> · R<sub>ca</sub>    →    R<sub>ca</sub> = (T<sub>c</sub> − T<sub>a</sub>) / P<sub>d</sub>    (replace P<sub>d</sub> by TDP)</span>
+<ul>
+<li>Given TDP, T<sub>c</sub> and T<sub>a</sub>, this picks the heat sink: R<sub>ca</sub> low enough keeps the case at or below T<sub>c</sub>. The motherboard heat path is orders of magnitude more resistive, so it is neglected.</li>
+<li>AMD Ryzen example: T<sub>a</sub> = 42 °C, T<sub>c</sub> = 61.8–69.3 °C, R<sub>ca</sub> = 0.189–0.420 °C/W, giving TDPs of 65–105 W. Check: (69.3 − 42) ÷ 0.42 = 65 W.</li>
+<li>Why TDP is ambiguous:
+<ul>
+<li>Makers rarely disclose T<sub>c</sub>, T<sub>a</sub> or the test workload, so TDPs of different makers are not comparable.</li>
+<li>Too high a T<sub>c</sub> (or too low a T<sub>a</sub>) chosen by the designer gives overheating and reduced performance; the opposite gives an oversized, expensive heat sink.</li>
+<li>All definitions assume the base clock, not turbo.</li>
+<li>Safe practice: ask for the recommended T<sub>c</sub> and oversize cooling, e.g. design for ~1.5× TDP if turbo is used. Lower junction temperature means longer device life.</li>
+</ul></li>
+<li>History: until ~2006 AMD reported maximum power draw as TDP; Intel changed this with Conroe and defines it as power under sustained load. Intel’s figure does not fully include Turbo Boost because of default time limits, while AMD Turbo Core always tries to push to the maximum power.</li>
+<li>Related ratings:
+<ul>
+<li>ACP (AMD average CPU power): power under “average” daily use, e.g. 40 W ACP vs 60 W TDP; both are stated.</li>
+<li>cTDP (configurable TDP): nominal, cTDP down (cooler, lower guaranteed frequency), cTDP up (more cooling, higher frequency).</li>
+<li>SDP (scenario design power): average power over a mix of benchmarks, not an extra power state.</li>
+</ul></li>
+</ul>
+<ul>
+<ul>
+<li>Lower thermal resistance (better heatsink or fan) allows more power at the same temperature limit.</li>
+<li>Problem: inadequate cooling raises junction temperature, causing device failure or permanent damage.</li>
+<li>Countermeasures:
+<ul>
+<li>Lower the clock rate near the junction temperature limit</li>
+<li>Thermal overload trap that powers the chip down</li>
+</ul></li>
+</ul>
+<h3>Efficiency techniques</h3>
+<ul>
+<li><b>Turn off clocks</b> to idle modules (FP unit, core).</li>
+<li><b>Overclocking (turbo mode):</b> exceed base clock briefly, maybe on few cores, until a temperature threshold is reached.</li>
+<li><b>Design for the typical case:</b> low-power modes in memory and storage.
+<ul>
+<li>DRAM and disks have low-power modes but cannot be accessed in them; they must return to full activity to read or write.</li>
+<li>PC processors rely on on-chip temperature sensors for an “emergency slowdown”, so they can be designed for the typical case.</li>
+</ul></li>
+<li><b>Turbo details (CA:AQA):</b> Intel started Turbo mode in 2008. Boost was ~10% over nominal through 2016, then 30–80%. Single-threaded code can run faster with other cores off. The OS can disable it, but there is no notification when it is on, so performance can vary with room temperature. Turbo clock growth was only ~2% per year (2011–2022).</li>
+<li><b>Heterogeneous cores:</b> fast high-power cores plus slow efficient cores (e.g. 2 + 4 in a phone), plus processors for narrow domains.</li>
+<li><b>Race-to-halt:</b> a faster, less efficient processor can let the rest of the system sleep sooner, saving total energy.</li>
+<li>DVFS plot (CA:AQA Fig. 1.12): savings of about 10–15% per step among 2.4, 1.8 and 1 GHz; at 1.8 GHz the server handles up to two-thirds of the load, at 1 GHz one-third, without service-level violations.</li>
+<li><b>DVFS:</b> several voltage and frequency levels chosen by workload.
+<ul>
+<li>P ∝ V²f, and lower frequency allows lower voltage, so power falls faster than speed.</li>
+<li>Lecture plot: two-thirds of the workload at 1.8 GHz uses about 80% of peak power.</li>
+</ul></li>
+</ul>
+
+<h2 id="cost">Cost trends</h2>
+<ul>
+<li><b>Cost</b> = manufacturing expense. <b>Price</b> = selling price.</li>
+<li>Architects should know costs before adding a feature (area affects yield).</li>
+</ul>
+<h3>Factors affecting cost</h3>
+<ul>
+<li><b>Time:</b>
+<ul>
+<li>Costs usually fall over time (not always, e.g. recent RAM prices).</li>
+<li>Main reason: manufacturers’ learning curve.</li>
+<li>Better learning raises yield; twice the yield means about half the cost.</li>
+</ul></li>
+<li><b>Volume:</b>
+<ul>
+<li>Higher volume lowers cost through larger purchases and manufacturing efficiency.</li>
+<li>Development cost is amortized over more units.</li>
+</ul></li>
+<li><b>Commoditization:</b>
+<ul>
+<li>Many vendors, large volumes, identical attributes.</li>
+<li>High competition lowers cost and narrows the gap between cost and price.</li>
+</ul></li>
+</ul>
+<h3>Cost of an integrated circuit (CA:AQA §1.6)</h3>
+<ul>
+<li>Learning curve is measured by yield, and twice the yield means half the cost. DRAM price tracks cost closely; microprocessors are less standardized, so the relation is looser.</li>
+<li>Rule of thumb: cost falls about <b>10% per doubling of volume</b>.</li>
+</ul>
+<span class="f">Cost of IC = (Cost of die + Cost of testing die + Cost of packaging and final test) / Final test yield</span>
+<span class="f">Cost of die = Cost of wafer / (Dies per wafer × Die yield)</span>
+<span class="f">Dies per wafer = π(d/2)² / A  −  π·d / √(2A)     (d = wafer diameter, A = die area)</span>
+<ul>
+<li>The first term is wafer area ÷ die area; the second corrects for rectangular dies at the round edge.</li>
+<li>300 mm wafer: 1.5 cm × 1.5 cm die (2.25 cm²) → ~270 dies; 1.0 cm × 1.0 cm die → ~<b>640</b> dies (the figure on the slide).</li>
+</ul>
+<span class="f">Die yield = Wafer yield × 1 / (1 + Defects per unit area × Die area)<sup>N</sup></span>
+<ul>
+<li>Bose-Einstein empirical model. Defect density ≈ 0.012 per cm² (0.075 per in²) for 7 and 5 nm in 2022; N (process-complexity factor) = 33 for 7 nm, 35 for 5 nm. Wafer yield is taken as 100%.</li>
+<li>With N = 35: large die yield = 1/(1 + 0.012 × 2.25)<sup>35</sup> × 270 ≈ <b>109</b> good dies (40%); small die = 1/(1 + 0.012 × 1.00)<sup>35</sup> × 640 ≈ <b>427</b> good dies (two-thirds).</li>
+<li>A 2022 5 nm wafer costs ~$16,000 (7 nm ~$10,000): the 1 cm² die costs ~$35, the 2.25 cm² die ~$135. Cost per die grows roughly as the <b>square of die area</b>.</li>
+<li>Designer controls die area (functions included, I/O pins) and redundancy; the process sets wafer cost and defect density.</li>
+<li>Redundancy raises yield: spare cells in DRAM and SRAM caches, ~4 spare of ~100 processors in GPUs.</li>
+<li>Reticle limit: the largest area one lithography exposure can cover, about 8.5 cm².</li>
+<li>Fixed (NRE) costs: a mask set costs ~$10 million at 7 nm and ~$20 million at 5 nm, which sets a floor on low-volume chips (under ~1 million parts) and matters little above ~10 million.</li>
+<li>Shuttle runs share one die among many small designs to amortize masks. <b>Chiplets</b>: smaller dies, some in older cheaper nodes, combined in one package, since SRAM and analog no longer scale like logic.</li>
+<li>Embodied carbon of a wafer is independent of yield, so higher yield also cuts carbon per good die.</li>
+</ul>
+<h3>Manufacturing vs operational cost</h3>
+<ul>
+<li>In warehouse-scale computers, amortized purchase price is about half of total monthly operational cost.</li>
+<li>About a third of operational cost is power use, distribution and cooling.</li>
+<li>Hence the need to design for energy efficiency.</li>
+<li>Does it hold for a personal PC? Usually not: purchase price dominates.</li>
+</ul>
+
+<h2 id="amdahl">Amdahl’s law</h2>
+<ul>
+<li>Overall gain from optimizing one part is limited by the fraction of time that part is used.</li>
+<li>A quantitative law of diminishing returns.</li>
+<li><b>s</b> = how many times faster the improved part becomes. <b>f</b> = fraction of old time it affects.</li>
+</ul>
+<span class="f">t<sub>new</sub> = (1 − f)·t<sub>old</sub> + (f·t<sub>old</sub>) ÷ s</span>
+<span class="f">Speedup = t<sub>old</sub> / t<sub>new</sub> = 1 / [ (1 − f) + f ÷ s ]</span>
+<h3>Worked example</h3>
+<ul>
+<li>Program: 200 s on one core = 180 s parallel (independent tiles) + 20 s serial (file read, combine).</li>
+<li>4 cores: t<sub>new</sub> = 20 + 180 ÷ 4 = 65 s.</li>
+<li>Speedup = 200 ÷ 65 = <b>3.08×</b>, not 4×. Same via f = 0.9: 1 / (0.1 + 0.9/4).</li>
+<li>The parallel part shrank to 45 s; the 20 s serial part was unaffected.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Cores</th><th>Total time</th><th>Speedup</th><th>Ideal</th></tr>
+<tr><td>1</td><td>200 s</td><td>1.00×</td><td>1×</td></tr>
+<tr><td>2</td><td>110 s</td><td>1.82×</td><td>2×</td></tr>
+<tr><td>4</td><td>65 s</td><td>3.08×</td><td>4×</td></tr>
+<tr><td>8</td><td>42.5 s</td><td>4.71×</td><td>8×</td></tr>
+<tr><td>16</td><td>31.25 s</td><td>6.40×</td><td>16×</td></tr>
+<tr><td>64</td><td>22.81 s</td><td>8.77×</td><td>64×</td></tr>
+<tr><td>1024</td><td>20.18 s</td><td>9.91×</td><td>1024×</td></tr>
+</table></div>
+<ul>
+<li>64 to 1024 cores: 16× more hardware, only 1.13× more speedup.</li>
+<li>Ceiling = 1 / (1 − f) = 10× for a 10% serial program, even on a million cores.</li>
+<li>Shrink the serial part to raise the ceiling: 25% serial → 4×, 10% → 10×, 5% → 20×, 1% → 100×.</li>
+</ul>
+<h3>Amdahl’s law in CA:AQA §1.10</h3>
+<ul>
+<li>Speedup = execution time without the enhancement ÷ execution time with it.</li>
+<li>Fraction<sub>enhanced</sub> (≤ 1) is the share of <i>original</i> time that can use the enhancement; Speedup<sub>enhanced</sub> (> 1) is the gain on that part. (Same as f and s above.)</li>
+<li>Execution time<sub>new</sub> = Execution time<sub>old</sub> × [(1 − Fraction) + Fraction ÷ Speedup<sub>enhanced</sub>].</li>
+<li>Example: web server, computation 40% of time, 10× faster: 1 / (0.6 + 0.4/10) = 1/0.64 ≈ <b>1.56×</b>.</li>
+<li>Common mistake: confusing the fraction of time <i>before</i> the enhancement (what you need) with the fraction of time <i>after</i> it is in use.</li>
+<li>Spend resources in proportion to where time is spent. Example: FSQRT is 20% of time and made 10× faster gives 1/(0.8 + 0.2/10) ≈ 1.22×; all FP (50% of time) made 1.6× faster gives 1/(0.5 + 0.5/1.6) ≈ <b>1.23×</b>, slightly better because it is more frequent.</li>
+<li>Also applies beyond speed: a 4150× more reliable power supply that is 22% of failure rate improves system reliability only 1.28×.</li>
+<li>The processor equation lets you measure IC and CPI separately, which is often easier than measuring the fraction of time Amdahl’s law needs.</li>
+</ul>
+<h3>Quantitative design principles (CA:AQA §1.10)</h3>
+<ul>
+<li><b>Parallelism:</b> system level (more processors and storage devices, scalability), and digital design level (memory banks, carry-lookahead adders).</li>
+<li><b>Pipelining:</b> overlap instruction execution, since not every instruction depends on its predecessor (instruction-level parallelism).</li>
+<li><b>Prediction:</b> guess and start work when recovery from a wrong guess is cheap and accuracy is high (also a security risk, e.g. Spectre).</li>
+<li><b>Locality:</b> programs reuse recent data and code; rule of thumb is 90% of time in 10% of code. Temporal locality: recently used items are used again soon. Spatial locality: nearby addresses are used together.</li>
+<li><b>Dependability via redundancy:</b> redundant components take over on failure.</li>
+<li><b>Focus on the common case:</b> favor the frequent case (e.g. optimize the no-overflow add). Amdahl’s law quantifies this.</li>
+</ul>
+<div class="calc" aria-label="Amdahl calculator">
+<label>Parallel fraction f: <b id="fv">90%</b><input id="f" type="range" min="0" max="99" value="90"></label>
+<label>Speedup of that part s (cores): <b id="sv">4</b><input id="s" type="range" min="0" max="10" value="2"></label>
+<div class="out" id="out"></div>
+</div>
+
+<p class="sub" style="margin-top:3rem">References: Patterson and Hennessy, <i>Computer Organization and Design, RISC-V Edition</i>, 2nd ed., Ch. 1; <i>Computer Architecture: A Quantitative Approach</i>, 6th ed., Ch. 1.</p>
+</main>
+</div>
+<script>
+(function(){
+var f=document.getElementById('f'),s=document.getElementById('s');
+function u(){
+var fv=f.value/100,sv=Math.pow(2,s.value*1);
+document.getElementById('fv').textContent=f.value+'%';
+document.getElementById('sv').textContent=sv;
+var sp=1/((1-fv)+fv/sv);
+document.getElementById('out').textContent='Speedup '+sp.toFixed(2)+'× (ceiling '+(1/(1-fv)).toFixed(1)+'×, ideal '+sv+'×)';
+}
+f.oninput=u;s.oninput=u;u();
+})();
+</script>
+<script>
+(function(){
+var ids=['overview','components','chip','trends','performance','spec','power','cost','amdahl'],cur=null;
+[].forEach.call(document.querySelector('main').children,function(e){
+if(e.tagName==='H2'){cur='var(--c'+(ids.indexOf(e.id)+1)+')';}
+if(cur)e.style.setProperty('--c',cur);});
+[].forEach.call(document.querySelectorAll('nav a'),function(a){
+var i=ids.indexOf(a.getAttribute('href').slice(1));a.style.setProperty('--c','var(--c'+(i+1)+')');});
+if('IntersectionObserver' in window){
+var io=new IntersectionObserver(function(es){es.forEach(function(en){
+if(en.isIntersecting){[].forEach.call(document.querySelectorAll('nav a'),function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+en.target.id);});}});},{rootMargin:'0px 0px -70% 0px'});
+ids.forEach(function(id){var h=document.getElementById(id);if(h)io.observe(h);});}
+[].forEach.call(document.querySelectorAll('main li'),function(li){
+var t=(li.firstChild&&li.firstChild.textContent||li.textContent).trim();
+if(/^(Example|Takeaway|Lesson|Ceiling|Key property|Common mistake|Trade-off example|Equation example|Why:)/.test(t)||/^(Example|Takeaway|Lesson|Key property|Common mistake)/.test(li.textContent.trim()))li.classList.add('ex');});
+var bar=document.getElementById('bar');
+function sc(){var d=document.documentElement,m=d.scrollHeight-d.clientHeight;bar.style.width=(m>0?d.scrollTop/m*100:0)+'%';}
+addEventListener('scroll',sc,{passive:true});sc();
+})();
+</script>
+</body>
+</html>
