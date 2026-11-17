@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CSE 4304 Labs 1 &amp; 2: Solutions</title>
+<style>
+:root{--bg:#fafaf7;--fg:#1c1c1a;--muted:#6b6b66;--card:#ffffff;--line:#e3e2dc;--accent:#b4451f;--codebg:#f3f2ec;--codefg:#23221f;--chip:#efe9e0}
+@media (prefers-color-scheme:dark){:root{--bg:#161614;--fg:#ecebe5;--muted:#9a9a92;--card:#1f1f1c;--line:#34332f;--accent:#e8845e;--codebg:#12120f;--codefg:#e6e4dc;--chip:#2b2a26}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 Georgia,'Times New Roman',serif}
+.wrap{max-width:880px;margin:0 auto;padding:40px 18px 80px}
+h1{font-size:2rem;margin:0 0 4px;line-height:1.2}
+.sub{color:var(--muted);margin:0 0 28px;font-family:system-ui,sans-serif;font-size:.95rem}
+nav{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-bottom:36px;font-family:system-ui,sans-serif;font-size:.95rem}
+nav h2{margin:0 0 8px;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+nav ol{margin:0;padding-left:1.2rem} nav a{color:var(--accent);text-decoration:none} nav a:hover{text-decoration:underline}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px 26px 22px;margin-bottom:30px}
+.chips{font-family:system-ui,sans-serif;font-size:.78rem;margin-bottom:8px}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:2px 10px;margin-right:6px;color:var(--muted)}
+h2.t{margin:0 0 8px;font-size:1.45rem;line-height:1.25}
+h3{font-family:system-ui,sans-serif;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:22px 0 8px}
+ol.steps{padding-left:1.3rem;margin:0} ol.steps li{margin-bottom:9px}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--codebg);padding:1px 5px;border-radius:4px}
+.codewrap{position:relative}
+pre{margin:0;background:var(--codebg);color:var(--codefg);border:1px solid var(--line);border-radius:10px;padding:16px;overflow-x:auto;font-size:.85rem;line-height:1.5}
+pre code{background:none;padding:0;font-size:inherit}
+button.copy{position:absolute;top:8px;right:8px;font:12px system-ui,sans-serif;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:3px 10px;cursor:pointer}
+button.copy:hover{border-color:var(--accent)}
+.trace{background:var(--codebg);border-left:3px solid var(--accent);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.cx{font-family:system-ui,sans-serif;font-size:.9rem;color:var(--muted);margin-top:14px}
+@media (max-width:560px){section{padding:18px 14px}h1{font-size:1.6rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>CSE 4304 &mdash; Lab 1 &amp; Lab 2 Solutions</h1>
+  <p class="sub">C++ solutions with step-by-step explanations. The first problem of each lab is left out.</p>
+  <nav><h2>Contents</h2><ol><li><a href="#l1p2">Lab 1: Reach a Number</a></li><li><a href="#l1p3">Lab 1: Last Moment Before All Ants Fall Out of a Plank</a></li><li><a href="#l1p4">Lab 1: Candy</a></li><li><a href="#l2p2">Lab 2: Implement an Array-Based Stack</a></li><li><a href="#l2p3">Lab 2: Parentheses Balance</a></li><li><a href="#l2p4">Lab 2: Asteroid Collision</a></li></ol></nav>
+  
+<section id="l1p2">
+  <div class="chips"><span class="chip">Lab 1</span><span class="chip">Math / Greedy</span><span class="chip">C++</span></div>
+  <h2 class="t">Reach a Number</h2>
+  <p>Start at 0. On move i you travel exactly i units, left or right. Find the minimum number of moves to end exactly on the target.</p>
+  <h3>Step-by-step explanation</h3>
+  <ol class="steps"><li><b>Use symmetry.</b> Reaching <code>-t</code> takes the same number of moves as reaching <code>t</code> (mirror every direction), so replace the target with its absolute value.</li><li><b>Total reach after k moves.</b> If every move goes right you end at <code>S = 1 + 2 + … + k</code>. You can never get farther than <code>S</code>, so we need <code>S ≥ t</code>.</li><li><b>Flipping a move changes the result by an even number.</b> Switching move <code>i</code> from right to left changes the final position by <code>2i</code>. So the final position always has the same parity as <code>S</code>, and we need <code>S - t</code> to be even.</li><li><b>Even is also enough.</b> We must flip a set of moves whose lengths add up to <code>(S - t) / 2</code>. Every integer from 0 to <code>S</code> is a subset sum of <code>{1..k}</code>, so such a set always exists.</li><li><b>Search.</b> Increase <code>k</code> one at a time, keeping <code>S</code> as the running sum, until <code>S ≥ t</code> and <code>(S - t)</code> is even. That first <code>k</code> is the answer.</li><li><b>Cost.</b> For |t| ≤ 10⁹, <code>k</code> is about √(2·10⁹) ≈ 45 000, so a plain loop for each of ≤ 100 tests is instant. Use <code>long long</code> for the sum.</li></ol>
+  <h3>Worked trace on the samples</h3>
+  <div class="trace">t = 2: k=1 → S=1 (&lt;2); k=2 → S=3 (diff 1, odd); k=3 → S=6 (diff 4, even) → <b>3</b>.<br>t = 3: k=1 → S=1; k=2 → S=3 (diff 0, even) → <b>2</b>.<br>t = −2 → |t| = 2 → <b>3</b>.</div>
+  <h3>Code &mdash; <code>reach_a_number.cpp</code></h3>
+  <div class="codewrap"><button class="copy" type="button">Copy</button><pre><code>#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main() {
+    int T;
+    scanf(&quot;%d&quot;, &amp;T);
+    while (T--) {
+        long long t;
+        scanf(&quot;%lld&quot;, &amp;t);
+        if (t &lt; 0) t = -t;
+        long long k = 0, sum = 0;
+        // smallest k with sum &gt;= t and (sum - t) even
+        while (sum &lt; t || (sum - t) % 2 != 0) {
+            k++;
+            sum += k;
+        }
+        printf(&quot;%lld\n&quot;, k);
+    }
+    return 0;
+}</code></pre></div>
+  <div class="cx">Time O(√|t|) per test, memory O(1).</div>
+</section>
+<section id="l1p3">
+  <div class="chips"><span class="chip">Lab 1</span><span class="chip">Observation / Simulation trick</span><span class="chip">C++</span></div>
+  <h2 class="t">Last Moment Before All Ants Fall Out of a Plank</h2>
+  <p>Ants walk at speed 1 on a plank of length L and reverse on meeting. Find when the last ant falls off.</p>
+  <h3>Step-by-step explanation</h3>
+  <ol class="steps"><li><b>Key observation.</b> When two identical ants meet and both reverse, the picture looks exactly the same as if they had walked <i>through</i> each other. Only the identities of the ants swap, and identities do not matter for the answer.</li><li><b>So ignore collisions.</b> Every ant effectively walks in a straight line until it leaves the plank.</li><li><b>Fall time of one ant.</b> A left-moving ant at position <code>x</code> needs <code>x</code> seconds to reach 0. A right-moving ant at position <code>x</code> needs <code>L − x</code> seconds to reach L.</li><li><b>Answer.</b> The last ant to fall corresponds to the maximum of all these individual times.</li><li><b>Input handling.</b> Read exactly <code>p</code> numbers for the left list, then exactly <code>q</code> for the right list. If a count is 0, nothing is read for it. <code>scanf</code> skips whitespace, so line breaks do not matter.</li></ol>
+  <h3>Worked trace on the samples</h3>
+  <div class="trace">L=4, left ants at 4, 3 → times 4, 3. Right ants at 0, 1 → times 4−0=4, 4−1=3. Maximum = <b>4</b>.<br>L=7, all eight ants move right, positions 0..7 → times 7..0 → <b>7</b>.<br>L=7, all move left, positions 0..7 → times 0..7 → <b>7</b>.</div>
+  <h3>Code &mdash; <code>ants_on_a_plank.cpp</code></h3>
+  <div class="codewrap"><button class="copy" type="button">Copy</button><pre><code>#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main() {
+    int T;
+    scanf(&quot;%d&quot;, &amp;T);
+    while (T--) {
+        int L, p, q;
+        scanf(&quot;%d %d %d&quot;, &amp;L, &amp;p, &amp;q);
+        int ans = 0;
+        // Collisions are equivalent to ants passing through each other.
+        for (int i = 0; i &lt; p; i++) {
+            int x;
+            scanf(&quot;%d&quot;, &amp;x);
+            ans = max(ans, x);       // left-moving ant falls at time x
+        }
+        for (int i = 0; i &lt; q; i++) {
+            int x;
+            scanf(&quot;%d&quot;, &amp;x);
+            ans = max(ans, L - x);   // right-moving ant falls at time L - x
+        }
+        printf(&quot;%d\n&quot;, ans);
+    }
+    return 0;
+}</code></pre></div>
+  <div class="cx">Time O(p + q) per test, memory O(1).</div>
+</section>
+<section id="l1p4">
+  <div class="chips"><span class="chip">Lab 1</span><span class="chip">Greedy / Two passes</span><span class="chip">C++</span></div>
+  <h2 class="t">Candy</h2>
+  <p>Give each child at least one candy; a child with a higher rating than a neighbour must get strictly more candies than that neighbour. Minimise the total.</p>
+  <h3>Step-by-step explanation</h3>
+  <ol class="steps"><li><b>Start everyone at 1</b> candy (<code>c[i] = 1</code>), which satisfies the first rule.</li><li><b>Left-to-right pass.</b> If <code>r[i] &gt; r[i−1]</code>, set <code>c[i] = c[i−1] + 1</code>. After this pass every child respects the rule against the <i>left</i> neighbour.</li><li><b>Right-to-left pass.</b> If <code>r[i] &gt; r[i+1]</code>, set <code>c[i] = max(c[i], c[i+1] + 1)</code>. The <code>max</code> keeps the left-pass requirement while also satisfying the right neighbour.</li><li><b>Why it is minimal.</b> Each value is the smallest number that satisfies the constraints coming from one side, and the <code>max</code> combines the two sides. Nothing is ever given more than a constraint forces.</li><li><b>Equal ratings</b> impose no constraint, so they are left alone.</li><li><b>Sum</b> all values in a <code>long long</code> and print only the total.</li></ol>
+  <h3>Worked trace on the samples</h3>
+  <div class="trace">Ratings 1 0 2: start [1,1,1]. Left pass: 0&gt;1? no; 2&gt;0 → c[2]=2 → [1,1,2]. Right pass: i=1: 0&gt;2? no; i=0: 1&gt;0 → c[0]=max(1,1+1)=2 → [2,1,2]. Total <b>5</b>.<br>Ratings 1 2 2: left pass → [1,2,1]; right pass changes nothing → total <b>4</b>.<br>Single child → <b>1</b>.</div>
+  <h3>Code &mdash; <code>candy.cpp</code></h3>
+  <div class="codewrap"><button class="copy" type="button">Copy</button><pre><code>#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main() {
+    int T;
+    scanf(&quot;%d&quot;, &amp;T);
+    while (T--) {
+        int n;
+        scanf(&quot;%d&quot;, &amp;n);
+        vector&lt;int&gt; r(n), c(n, 1);
+        for (int i = 0; i &lt; n; i++) scanf(&quot;%d&quot;, &amp;r[i]);
+        for (int i = 1; i &lt; n; i++)
+            if (r[i] &gt; r[i - 1]) c[i] = c[i - 1] + 1;
+        for (int i = n - 2; i &gt;= 0; i--)
+            if (r[i] &gt; r[i + 1]) c[i] = max(c[i], c[i + 1] + 1);
+        long long total = 0;
+        for (int i = 0; i &lt; n; i++) total += c[i];
+        printf(&quot;%lld\n&quot;, total);
+    }
+    return 0;
+}</code></pre></div>
+  <div class="cx">Time O(n), memory O(n).</div>
+</section>
+<section id="l2p2">
+  <div class="chips"><span class="chip">Lab 2</span><span class="chip">Data structure (no STL)</span><span class="chip">C++</span></div>
+  <h2 class="t">Implement an Array-Based Stack</h2>
+  <p>Build a LIFO stack on a plain array with push, pop, top, size, isEmpty, isFull and display, and drive it with a command list.</p>
+  <h3>Step-by-step explanation</h3>
+  <ol class="steps"><li><b>Storage.</b> A global <code>long long stk[]</code> array holds the values and an int <code>topIdx</code> counts the stored items, so it is also the index of the next free slot. <code>capacity</code> holds the case's N.</li><li><b>Simple queries.</b> <code>isEmpty()</code> is <code>topIdx == 0</code>, <code>isFull()</code> is <code>topIdx == capacity</code>, <code>size()</code> returns <code>topIdx</code>.</li><li><b>Mutating functions return a status instead of printing.</b> <code>push(x)</code> returns false if full, otherwise stores <code>stk[topIdx++]</code>. <code>pop(v)</code> and <code>top(v)</code> return false if empty and otherwise give the value through a reference. Not printing inside them is what lets the same code be reused in the Parentheses problem.</li><li><b>display()</b> prints from <code>topIdx−1</code> down to 0, separated by single spaces. It is only called by <code>main</code> after a successful push.</li><li><b>Command loop.</b> For each case read N, set <code>capacity = N</code> and <code>topIdx = 0</code> (empty stack), then read command words with <code>scanf("%s")</code> until <code>END</code>. Only <code>PUSH</code> reads an extra number.</li><li><b>Output rules.</b> After PUSH print the stack or <code>Stack is full</code>; POP prints the removed value or <code>Stack is empty</code>; TOP prints the top or <code>Stack is empty</code>; SIZE prints a number; EMPTY and FULL print YES/NO; END prints nothing.</li><li><b>No STL.</b> Only <code>&lt;cstdio&gt;</code> and <code>&lt;cstring&gt;</code> are included, and strings are plain char arrays.</li></ol>
+  <h3>Worked trace on the samples</h3>
+  <div class="trace">N=3: PUSH 10 → <code>10</code>; PUSH 20 → <code>20 10</code>; TOP → <code>20</code>; PUSH 30 → <code>30 20 10</code>; FULL → YES; PUSH 40 → <code>Stack is full</code>; SIZE → 3; POP → 30; POP → 20; EMPTY → NO; POP → 10; POP → <code>Stack is empty</code>; TOP → <code>Stack is empty</code>; EMPTY → YES.</div>
+  <h3>Code &mdash; <code>array_stack.cpp</code></h3>
+  <div class="codewrap"><button class="copy" type="button">Copy</button><pre><code>// Implement an Array-Based Stack (no STL)
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+
+const int MAXCAP = 200005;
+
+long long stk[MAXCAP];  // storage
+int topIdx = 0;         // number of stored items (next free slot)
+int capacity = 0;       // capacity N of the current case
+
+bool isEmpty() { return topIdx == 0; }
+bool isFull()  { return topIdx == capacity; }
+int  size()    { return topIdx; }
+
+// Returns false (and leaves the stack unchanged) if full.
+bool push(long long x) {
+    if (isFull()) return false;
+    stk[topIdx++] = x;
+    return true;
+}
+
+// Returns false (and leaves the stack unchanged) if empty.
+bool pop(long long &amp;removed) {
+    if (isEmpty()) return false;
+    removed = stk[--topIdx];
+    return true;
+}
+
+// Returns false if empty.
+bool top(long long &amp;value) {
+    if (isEmpty()) return false;
+    value = stk[topIdx - 1];
+    return true;
+}
+
+// Prints stored values from top to bottom, separated by one space.
+void display() {
+    for (int i = topIdx - 1; i &gt;= 0; i--) {
+        printf(&quot;%lld&quot;, stk[i]);
+        if (i &gt; 0) printf(&quot; &quot;);
+    }
+    printf(&quot;\n&quot;);
+}
+
+int main() {
+    int T;
+    if (scanf(&quot;%d&quot;, &amp;T) != 1) return 0;
+    while (T--) {
+        int N;
+        if (scanf(&quot;%d&quot;, &amp;N) != 1) return 0;
+        capacity = N;
+        topIdx = 0;  // stack starts empty for every case
+
+        char cmd[16];
+        while (scanf(&quot;%15s&quot;, cmd) == 1) {
+            if (strcmp(cmd, &quot;END&quot;) == 0) break;
+            if (strcmp(cmd, &quot;PUSH&quot;) == 0) {
+                long long x;
+                scanf(&quot;%lld&quot;, &amp;x);
+                if (push(x)) display();
+                else printf(&quot;Stack is full\n&quot;);
+            } else if (strcmp(cmd, &quot;POP&quot;) == 0) {
+                long long v;
+                if (pop(v)) printf(&quot;%lld\n&quot;, v);
+                else printf(&quot;Stack is empty\n&quot;);
+            } else if (strcmp(cmd, &quot;TOP&quot;) == 0) {
+                long long v;
+                if (top(v)) printf(&quot;%lld\n&quot;, v);
+                else printf(&quot;Stack is empty\n&quot;);
+            } else if (strcmp(cmd, &quot;SIZE&quot;) == 0) {
+                printf(&quot;%d\n&quot;, size());
+            } else if (strcmp(cmd, &quot;EMPTY&quot;) == 0) {
+                printf(isEmpty() ? &quot;YES\n&quot; : &quot;NO\n&quot;);
+            } else if (strcmp(cmd, &quot;FULL&quot;) == 0) {
+                printf(isFull() ? &quot;YES\n&quot; : &quot;NO\n&quot;);
+            }
+        }
+    }
+    return 0;
+}</code></pre></div>
+  <div class="cx">Every operation is O(1); memory O(capacity).</div>
+</section>
+<section id="l2p3">
+  <div class="chips"><span class="chip">Lab 2</span><span class="chip">Stack (no STL)</span><span class="chip">C++</span></div>
+  <h2 class="t">Parentheses Balance</h2>
+  <p>Decide whether a string made of ( ) [ ] is a correctly nested bracket sequence, using the stack from the previous task.</p>
+  <h3>Step-by-step explanation</h3>
+  <ol class="steps"><li><b>Reuse the stack.</b> The same array-based functions are pasted in, with the capacity raised to 200 005 so even a very long string cannot overflow it. Nothing in the stack prints in this task.</li><li><b>Scan left to right.</b> For an opening bracket <code>(</code> or <code>[</code>, push it.</li><li><b>For a closing bracket</b>, the most recent unclosed opener must be the matching type. Look at the top: if the stack is empty, or the top is the wrong kind, the string is wrong, so answer <code>No</code> immediately. Otherwise pop it.</li><li><b>At the end</b> the stack must be empty. Leftover openers mean something was never closed.</li><li><b>Why checking the type matters.</b> <code>([)]</code> has a partner for every bracket but is still invalid, because <code>]</code> would close while <code>(</code> is still open inside it. A stack catches this because only the top can be closed.</li><li><b>Input handling.</b> Read each string with a <code>char</code> buffer (up to 100 000 characters), reset the stack for every string, and print <code>Yes</code> or <code>No</code> per line.</li></ol>
+  <h3>Worked trace on the samples</h3>
+  <div class="trace"><code>(([()])))</code>: push ( ; push ( ; push [ ; push ( ; <code>)</code> pops ( ; <code>]</code> pops [ ; <code>)</code> pops ( ; <code>)</code> pops ( ; the stack is now empty; the final <code>)</code> finds no top → <b>No</b>.<br><code>([])</code>: push ( ; push [ ; <code>]</code> pops [ ; <code>)</code> pops ( ; empty at the end → <b>Yes</b>.</div>
+  <h3>Code &mdash; <code>parentheses_balance.cpp</code></h3>
+  <div class="codewrap"><button class="copy" type="button">Copy</button><pre><code>// Parentheses Balance (no STL) - reuses the array-based stack from Task B
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+
+const int MAXCAP = 200005;
+
+long long stk[MAXCAP];
+int topIdx = 0;
+int capacity = 0;
+
+bool isEmpty() { return topIdx == 0; }
+bool isFull()  { return topIdx == capacity; }
+int  size()    { return topIdx; }
+
+bool push(long long x) {
+    if (isFull()) return false;
+    stk[topIdx++] = x;
+    return true;
+}
+
+bool pop(long long &amp;removed) {
+    if (isEmpty()) return false;
+    removed = stk[--topIdx];
+    return true;
+}
+
+bool top(long long &amp;value) {
+    if (isEmpty()) return false;
+    value = stk[topIdx - 1];
+    return true;
+}
+
+// Kept from Task B for completeness; not called in this task
+// (stack operations must not print anything here).
+void display() {
+    for (int i = topIdx - 1; i &gt;= 0; i--) {
+        printf(&quot;%lld&quot;, stk[i]);
+        if (i &gt; 0) printf(&quot; &quot;);
+    }
+    printf(&quot;\n&quot;);
+}
+
+static char s[100010];
+
+bool isCorrect(const char *str) {
+    topIdx = 0;
+    capacity = MAXCAP;  // capacity increased as needed
+    for (int i = 0; str[i]; i++) {
+        char c = str[i];
+        if (c == &#x27;(&#x27; || c == &#x27;[&#x27;) {
+            push(c);
+        } else if (c == &#x27;)&#x27; || c == &#x27;]&#x27;) {
+            long long t;
+            if (!top(t)) return false;
+            char want = (c == &#x27;)&#x27;) ? &#x27;(&#x27; : &#x27;[&#x27;;
+            if (t != want) return false;
+            pop(t);
+        }
+    }
+    return isEmpty();
+}
+
+int main() {
+    int T;
+    if (scanf(&quot;%d&quot;, &amp;T) != 1) return 0;
+    while (T--) {
+        scanf(&quot;%100005s&quot;, s);
+        printf(isCorrect(s) ? &quot;Yes\n&quot; : &quot;No\n&quot;);
+    }
+    return 0;
+}</code></pre></div>
+  <div class="cx">Time O(length) per string, memory O(length).</div>
+</section>
+<section id="l2p4">
+  <div class="chips"><span class="chip">Lab 2</span><span class="chip">Stack (STL allowed)</span><span class="chip">C++</span></div>
+  <h2 class="t">Asteroid Collision</h2>
+  <p>Asteroids move at the same speed; positive means right, negative means left. Smaller ones explode on collision, equal sizes both explode. Output the survivors in order.</p>
+  <h3>Step-by-step explanation</h3>
+  <ol class="steps"><li><b>When can a collision happen?</b> Only when a right-moving asteroid (positive) is somewhere to the left of a left-moving one (negative). Two asteroids going the same way never meet, and a left-mover followed by a right-mover move apart.</li><li><b>Keep a stack of survivors</b> (a <code>vector&lt;int&gt;</code> used as a stack). Process the asteroids left to right.</li><li><b>For each new asteroid <code>a</code></b>, if it is positive, or the stack is empty, or the top is negative, it cannot collide, so push it.</li><li><b>If <code>a</code> is negative and the top is positive</b>, they collide: if the top is smaller (<code>top &lt; -a</code>), pop it and keep fighting with the next top; if equal, pop it and <code>a</code> also dies; if the top is bigger, <code>a</code> dies and the top stays.</li><li><b>If <code>a</code> survives</b> all those fights, push it.</li><li><b>Each asteroid is pushed once and popped at most once</b>, so the whole case is O(n).</li><li><b>Output.</b> Print the stack from bottom to top, separated by spaces, or <code>Empty</code> if nothing is left.</li></ol>
+  <h3>Worked trace on the samples</h3>
+  <div class="trace"><code>5 10 -5</code>: push 5; push 10; −5 meets 10, and 10 is bigger so −5 dies → <b>5 10</b>.<br><code>8 -8</code>: push 8; −8 equals 8, both vanish → <b>Empty</b>.<br><code>10 2 -5</code>: push 10; push 2; −5 beats 2 (pop), then meets 10 and dies → <b>10</b>.</div>
+  <h3>Code &mdash; <code>asteroid_collision.cpp</code></h3>
+  <div class="codewrap"><button class="copy" type="button">Copy</button><pre><code>// Asteroid Collision - stack, O(n) per test case (STL allowed)
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main() {
+    int T;
+    scanf(&quot;%d&quot;, &amp;T);
+    while (T--) {
+        int n;
+        scanf(&quot;%d&quot;, &amp;n);
+        vector&lt;int&gt; st;
+        for (int i = 0; i &lt; n; i++) {
+            int a;
+            scanf(&quot;%d&quot;, &amp;a);
+            bool alive = true;
+            while (alive &amp;&amp; a &lt; 0 &amp;&amp; !st.empty() &amp;&amp; st.back() &gt; 0) {
+                if (st.back() &lt; -a) {
+                    st.pop_back();          // right-moving one explodes
+                } else if (st.back() == -a) {
+                    st.pop_back();          // both explode
+                    alive = false;
+                } else {
+                    alive = false;          // current one explodes
+                }
+            }
+            if (alive) st.push_back(a);
+        }
+        if (st.empty()) {
+            printf(&quot;Empty\n&quot;);
+        } else {
+            for (size_t i = 0; i &lt; st.size(); i++) {
+                if (i) printf(&quot; &quot;);
+                printf(&quot;%d&quot;, st[i]);
+            }
+            printf(&quot;\n&quot;);
+        }
+    }
+    return 0;
+}</code></pre></div>
+  <div class="cx">Time O(n) per case, memory O(n).</div>
+</section>
+</div>
+<script>
+document.querySelectorAll('button.copy').forEach(function(b){
+  b.addEventListener('click',function(){
+    var t=b.parentNode.querySelector('code').innerText;
+    var done=function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1400)};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){})}
+  });
+});
+</script>
+</body>
+</html>
